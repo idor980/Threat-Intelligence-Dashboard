@@ -1,20 +1,22 @@
-import type { AbuseIPDBResponse, ThreatIntelligenceData } from '@/types/index.js';
+import type { AbuseIPDBResponse, IPQualityScoreResponse, ThreatIntelligenceData } from '@/types/index.js';
 import { AbuseIPDBService } from '@/services/abuseIPDB.js';
+import { IPQualityScoreService } from '@/services/ipQualityScore.js';
 
 /**
  * Aggregates threat intelligence data from multiple sources
- * Currently supports: AbuseIPDB
- * TODO: Add IPQualityScore API for VPN/Proxy detection and threat scoring
+ * Supports: AbuseIPDB and IPQualityScore
  */
 export class ThreatIntelligenceAggregator {
   private abuseIPDBService: AbuseIPDBService;
+  private ipQualityScoreService: IPQualityScoreService;
 
   constructor() {
     this.abuseIPDBService = new AbuseIPDBService();
+    this.ipQualityScoreService = new IPQualityScoreService();
   }
 
   /**
-   * Aggregate threat intelligence data from AbuseIPDB
+   * Aggregate threat intelligence data from AbuseIPDB and IPQualityScore
    * @param ipAddress - The IP address to check
    * @param maxAgeInDays - Maximum age of reports to include (default: 90)
    * @returns Unified threat intelligence data
@@ -23,31 +25,38 @@ export class ThreatIntelligenceAggregator {
     ipAddress: string,
     maxAgeInDays: number = 90
   ): Promise<ThreatIntelligenceData> {
-    const abuseData = await this.abuseIPDBService.checkIP(ipAddress, maxAgeInDays);
-    
     console.error('\n========================================');
     console.error('🔍 IP Address Query:', ipAddress);
     console.error('📅 Max Age in Days:', maxAgeInDays);
     console.error('========================================\n');
+
+    // Fetch data from both APIs in parallel
+    const [abuseData, ipQualityData] = await Promise.all([
+      this.abuseIPDBService.checkIP(ipAddress, maxAgeInDays),
+      this.ipQualityScoreService.checkIP(ipAddress),
+    ]);
     
-    return this.transformToUnifiedFormat(abuseData);
+    return this.transformToUnifiedFormat(abuseData, ipQualityData);
   }
 
   /**
-   * Transform AbuseIPDB response to unified format
-   * Note: vpnDetected and threatScore will be populated when IPQualityScore API is integrated
+   * Transform AbuseIPDB and IPQualityScore responses to unified format
    */
-  private transformToUnifiedFormat(abuseData: AbuseIPDBResponse): ThreatIntelligenceData {
+  private transformToUnifiedFormat(
+    abuseData: AbuseIPDBResponse,
+    ipQualityData: IPQualityScoreResponse
+  ): ThreatIntelligenceData {
     const { data } = abuseData;
 
     const transformedData: ThreatIntelligenceData = {
       ipAddress: data.ipAddress,
-      hostname: data.hostnames[0],
-      isp: data.isp,
+      hostname: data.hostnames[0] || ipQualityData.host || undefined,
+      isp: data.isp || ipQualityData.ISP,
       country: data.countryName,
       abuseScore: data.abuseConfidenceScore,
       recentReports: data.totalReports,
-      // vpnDetected and threatScore will be added from IPQualityScore API
+      vpnDetected: ipQualityData.vpn || ipQualityData.proxy,
+      threatScore: ipQualityData.fraud_score,
     };
 
     // Log the transformation

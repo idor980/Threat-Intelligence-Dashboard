@@ -7,9 +7,15 @@ export type AbuseIPDBResponse = {
     countryName: string;
     abuseConfidenceScore: number;
     totalReports: number;
-    // VPN/Proxy Detected -> must come from IPQualityScore API
-    // Threat Score -> must come from IPQualityScore API
   };
+};
+
+export type IPQualityScoreResponse = {
+  ISP: string;
+  host: string;
+  proxy: boolean;
+  vpn: boolean;
+  fraud_score: number;
 };
 
 
