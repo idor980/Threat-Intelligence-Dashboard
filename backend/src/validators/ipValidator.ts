@@ -33,4 +33,3 @@ export const intelQuerySchema = z.object({
 });
 
 export type IntelQuery = z.infer<typeof intelQuerySchema>;
-

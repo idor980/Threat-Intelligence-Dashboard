@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env --tsconfig tsconfig.json src/index.ts",
     "start": "node --env-file=.env dist/index.js",
-    "build": "tsc && tsc-alias"
+    "build": "tsc && tsc-alias",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.{ts,js,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,json}\""
   },
   "keywords": [],
   "author": "",
@@ -27,6 +31,7 @@
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
+    "prettier": "^3.6.2",
     "supertest": "^7.1.4",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.20.6",

@@ -18,7 +18,6 @@ export type IPQualityScoreResponse = {
   fraud_score: number;
 };
 
-
 // Unified Response Type (sent to frontend)
 export type ThreatIntelligenceData = {
   ipAddress: string;
@@ -37,4 +36,3 @@ export type ErrorResponse = {
   message: string;
   statusCode: number;
 };
-

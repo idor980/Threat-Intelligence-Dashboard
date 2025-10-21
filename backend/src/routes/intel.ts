@@ -8,19 +8,19 @@ const aggregator = new ThreatIntelligenceAggregator();
 
 /**
  * GET /api/intel?ip=<ip_address>&maxAgeInDays=<days>
- * 
+ *
  * Query an IP address for threat intelligence data
- * 
+ *
  * @param ip - IP address to check (required)
  * @param maxAgeInDays - Maximum age of reports in days (optional, default: 90, range: 1-365)
- * 
+ *
  * @returns Aggregated threat intelligence data with risk level
  */
 router.get(
   '/',
   asyncHandler(async (req, res) => {
     console.error('🎯 Route handler called! Query params:', req.query);
-    
+
     // Validate query parameters
     const validationResult = intelQuerySchema.safeParse(req.query);
 
@@ -42,4 +42,3 @@ router.get(
 );
 
 export { router as intelRouter };
-

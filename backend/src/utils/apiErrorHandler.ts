@@ -6,8 +6,8 @@ import { AxiosError } from 'axios';
  */
 export function handleProviderError(error: AxiosError, providerName: string): never {
   const status = error.response?.status;
-  const data = error.response?.data as { 
-    errors?: Array<{ detail: string }>; 
+  const data = error.response?.data as {
+    errors?: Array<{ detail: string }>;
     message?: string;
   };
 
@@ -24,10 +24,8 @@ export function handleProviderError(error: AxiosError, providerName: string): ne
   // Bad request (400)
   if (status === 400) {
     // Try to extract error message from different response formats
-    const errorMsg = 
-      data?.errors?.[0]?.detail || 
-      data?.message || 
-      `Bad request to ${providerName} API`;
+    const errorMsg =
+      data?.errors?.[0]?.detail || data?.message || `Bad request to ${providerName} API`;
     throw new Error(errorMsg);
   }
 
@@ -44,4 +42,3 @@ export function handleProviderError(error: AxiosError, providerName: string): ne
   // Generic error fallback
   throw new Error(error.message || `Failed to fetch data from ${providerName}`);
 }
-

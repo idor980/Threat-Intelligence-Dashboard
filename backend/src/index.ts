@@ -8,12 +8,12 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 /**  Allows your frontend (running on a different port/domain) to talk to your backend.
- *   Without this, browsers block cross-origin requests for security reasons. 
-*/
+ *   Without this, browsers block cross-origin requests for security reasons.
+ */
 app.use(cors());
-/** Parses incoming JSON data in request bodies. 
-* Without this, req.body would be undefined when clients send JSON data. 
-*/
+/** Parses incoming JSON data in request bodies.
+ * Without this, req.body would be undefined when clients send JSON data.
+ */
 app.use(express.json());
 
 // Health check endpoint
@@ -35,4 +35,3 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 export { app };
-

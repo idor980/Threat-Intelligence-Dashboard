@@ -12,23 +12,26 @@ Node.js Backend-for-Frontend (BFF) service that aggregates threat intelligence d
 
 ## Prerequisites
 
-- Node.js 20+ 
+- Node.js 20+
 - npm or yarn
 - AbuseIPDB API key (free tier available at https://www.abuseipdb.com/api.html)
 
 ## Installation
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Create a `.env` file in the backend directory:
+
 ```bash
 cp .env.example .env
 ```
 
 3. Add your AbuseIPDB API key to `.env`:
+
 ```env
 ABUSEIPDB_API_KEY=your_api_key_here
 ```
@@ -36,12 +39,15 @@ ABUSEIPDB_API_KEY=your_api_key_here
 ## Running the Server
 
 ### Development Mode (with hot reload)
+
 ```bash
 npm run dev
 ```
+
 Server will start on `http://localhost:3001`
 
 ### Production Mode
+
 ```bash
 npm run build
 npm start
@@ -50,26 +56,32 @@ npm start
 ## API Endpoints
 
 ### Health Check
+
 ```
 GET /health
 ```
+
 Returns server status and timestamp.
 
 ### Get Threat Intelligence
+
 ```
 GET /api/intel?ip=<ip_address>&maxAgeInDays=<days>
 ```
 
 **Query Parameters:**
+
 - `ip` (required): IP address to check (IPv4 or IPv6)
 - `maxAgeInDays` (optional): Maximum age of reports in days (1-365, default: 90)
 
 **Example Request:**
+
 ```bash
 curl "http://localhost:3001/api/intel?ip=8.8.8.8&maxAgeInDays=90"
 ```
 
 **Example Response:**
+
 ```json
 {
   "ipAddress": "8.8.8.8",
@@ -88,6 +100,7 @@ curl "http://localhost:3001/api/intel?ip=8.8.8.8&maxAgeInDays=90"
 ```
 
 **Error Response:**
+
 ```json
 {
   "error": "Error",
@@ -158,13 +171,12 @@ The backend is designed to easily integrate additional threat intelligence APIs:
 
 ## Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `PORT` | Server port (default: 3001) | No |
-| `NODE_ENV` | Environment (development/production/test) | No |
-| `ABUSEIPDB_API_KEY` | AbuseIPDB API key | Yes |
+| Variable            | Description                               | Required |
+| ------------------- | ----------------------------------------- | -------- |
+| `PORT`              | Server port (default: 3001)               | No       |
+| `NODE_ENV`          | Environment (development/production/test) | No       |
+| `ABUSEIPDB_API_KEY` | AbuseIPDB API key                         | Yes      |
 
 ## License
 
 ISC
-

@@ -1,4 +1,8 @@
-import type { AbuseIPDBResponse, IPQualityScoreResponse, ThreatIntelligenceData } from '@/types/index.js';
+import type {
+  AbuseIPDBResponse,
+  IPQualityScoreResponse,
+  ThreatIntelligenceData,
+} from '@/types/index.js';
 import { AbuseIPDBService } from '@/services/abuseIPDB.js';
 import { IPQualityScoreService } from '@/services/ipQualityScore.js';
 
@@ -35,7 +39,7 @@ export class ThreatIntelligenceAggregator {
       this.abuseIPDBService.checkIP(ipAddress, maxAgeInDays),
       this.ipQualityScoreService.checkIP(ipAddress),
     ]);
-    
+
     return this.transformToUnifiedFormat(abuseData, ipQualityData);
   }
 
@@ -60,10 +64,12 @@ export class ThreatIntelligenceAggregator {
     };
 
     // Log the transformation
-    console.error('🔄 Transformed to ThreatIntelligenceData:', JSON.stringify(transformedData, null, 2));
+    console.error(
+      '🔄 Transformed to ThreatIntelligenceData:',
+      JSON.stringify(transformedData, null, 2)
+    );
     console.error('✅ Response matches ThreatIntelligenceData type\n');
 
     return transformedData;
   }
 }
-
