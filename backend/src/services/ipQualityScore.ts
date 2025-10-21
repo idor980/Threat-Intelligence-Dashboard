@@ -1,5 +1,6 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import type { IPQualityScoreResponse } from '@/types/index.js';
+import { handleProviderError } from '@/utils/apiErrorHandler.js';
 
 const IPQUALITYSCORE_API_URL = 'https://ipqualityscore.com/api/json/ip';
 
@@ -39,47 +40,10 @@ export class IPQualityScoreService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return this.handleIPQualityScoreError(error);
+        return handleProviderError(error, 'IPQualityScore');
       }
       throw new Error('Unexpected error when calling IPQualityScore API');
     }
-  }
-
-  /**
-   * Handle errors from IPQualityScore API
-   */
-  private handleIPQualityScoreError(error: AxiosError): never {
-    const status = error.response?.status;
-    const data = error.response?.data as { success?: boolean; message?: string };
-
-    // Rate limit error (429)
-    if (status === 429) {
-      throw new Error('Rate limit reached for IPQualityScore. Please try again later.');
-    }
-
-    // Authentication error (401/403)
-    if (status === 401 || status === 403) {
-      throw new Error('Invalid IPQualityScore API key or insufficient permissions.');
-    }
-
-    // Bad request (400)
-    if (status === 400) {
-      const errorMsg = data?.message || 'Bad request to IPQualityScore API';
-      throw new Error(errorMsg);
-    }
-
-    // Server error (500+)
-    if (status && status >= 500) {
-      throw new Error('IPQualityScore service is currently unavailable. Please try again later.');
-    }
-
-    // Network/timeout errors
-    if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
-      throw new Error('Request to IPQualityScore timed out. Please try again.');
-    }
-
-    // Generic error
-    throw new Error(error.message || 'Failed to fetch data from IPQualityScore');
   }
 }
 

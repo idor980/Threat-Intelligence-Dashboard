@@ -1,5 +1,6 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import type { AbuseIPDBResponse } from '@/types/index.js';
+import { handleProviderError } from '@/utils/apiErrorHandler.js';
 
 const ABUSEIPDB_API_URL = 'https://api.abuseipdb.com/api/v2';
 
@@ -41,47 +42,10 @@ export class AbuseIPDBService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return this.handleAbuseIPDBError(error);
+        return handleProviderError(error, 'AbuseIPDB');
       }
       throw new Error('Unexpected error when calling AbuseIPDB API');
     }
-  }
-
-  /**
-   * Handle errors from AbuseIPDB API
-   */
-  private handleAbuseIPDBError(error: AxiosError): never {
-    const status = error.response?.status;
-    const data = error.response?.data as { errors?: Array<{ detail: string }> };
-
-    // Rate limit error (429)
-    if (status === 429) {
-      throw new Error('Rate limit reached for AbuseIPDB. Please try again later.');
-    }
-
-    // Authentication error (401/403)
-    if (status === 401 || status === 403) {
-      throw new Error('Invalid AbuseIPDB API key or insufficient permissions.');
-    }
-
-    // Bad request (400)
-    if (status === 400) {
-      const errorMsg = data?.errors?.[0]?.detail || 'Bad request to AbuseIPDB API';
-      throw new Error(errorMsg);
-    }
-
-    // Server error (500+)
-    if (status && status >= 500) {
-      throw new Error('AbuseIPDB service is currently unavailable. Please try again later.');
-    }
-
-    // Network/timeout errors
-    if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
-      throw new Error('Request to AbuseIPDB timed out. Please try again.');
-    }
-
-    // Generic error
-    throw new Error(error.message || 'Failed to fetch data from AbuseIPDB');
   }
 }
 
