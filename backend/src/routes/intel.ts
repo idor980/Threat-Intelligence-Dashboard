@@ -1,6 +1,6 @@
 import express from 'express';
 import { intelQuerySchema } from '@/validators/ipValidator.js';
-import { ThreatIntelligenceAggregator } from '@/services/aggregation.service.js';
+import { ThreatIntelligenceAggregator } from '@/services/aggregation.js';
 import { asyncHandler } from '@/utils/errorHandler.js';
 
 const router = express.Router();
