@@ -1,5 +1,5 @@
 import type { AbuseIPDBResponse, ThreatIntelligenceData } from '@/types/index.js';
-import { AbuseIPDBService } from '@/services/abuseIPDB.service.js';
+import { AbuseIPDBService } from '@/services/abuseIPDB.js';
 
 /**
  * Aggregates threat intelligence data from multiple sources
