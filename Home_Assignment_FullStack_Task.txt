@@ -1,0 +1,79 @@
+Home Assignment - Full-Stack Developer (React + Node.js)
+
+As the next step in our interview process, we would like you to complete a short home assignment. This task will help us evaluate your full-stack development skills using React and Node.js.
+
+Assignment: Threat Intelligence Dashboard
+
+Your goal is to build a simple full-stack application that allows users to input an IP address and retrieve threat intelligence data about it. The application should consist of a React frontend and a Node.js backend for frontend (BFF).
+
+React Frontend
+---------------
+Develop a user interface with the following features:
+• Input Field: For entering an IP address.
+• "Check" Button: To send the IP address to your backend for processing.
+• Results View: Display the following information returned from the backend:
+  - Threat/reputation score
+  - Abuse reports
+  - IP geolocation or similar metadata
+• State Handling: Implement robust handling for loading and error states.
+• State Management: Choose and implement a state management approach (e.g., Context API, Redux, etc).
+
+When a user enters a valid IP address and clicks “Check”, the app should display the following fields:
+
+Field: Description
+IP Address: The input IP (as validated by the backend)
+Hostname: The hostname of the IP, if available
+ISP: Internet service provider/carrier name
+Country: Geolocation result (country name)
+Abuse Score: A value from AbuseIPDB (0-100) indicating the likelihood of malicious use
+Recent Reports: How many abuse reports were submitted in the last X days
+VPN/Proxy Detected: Whether this IP is flagged as a VPN/proxy (from IPQualityScore)
+Threat Score: An overall threat score, if available (from IPQualityScore or derived)
+
+Node.js Backend-for-Frontend (BFF)
+-----------------------------------
+Create a BFF that acts as an intermediary between your frontend and external APIs:
+• API Route: Expose an API endpoint (e.g., /api/intel?ip=8.8.8.8) that your frontend will consume.
+• IP Validation: Implement validation to ensure the submitted IP address is in the correct format.
+• External API Integration: Query at least two public APIs (suggestions below).
+• Data Aggregation: Aggregate the responses from the external APIs into a clean, unified JSON format.
+• Response: Return the aggregated result to the frontend.
+
+Public API Suggestions
+-----------------------
+You may use any of the following free APIs or similar alternatives:
+• AbuseIPDB: For IP abuse reports (requires a free API key)
+  Docs: https://www.abuseipdb.com/api.html
+  Example: GET https://api.abuseipdb.com/api/v2/check?ipAddress=8.8.8.8&maxAgeInDays=90
+• IPQualityScore: For reputation and VPN detection (requires a free API key)
+  Docs: https://www.ipqualityscore.com/documentation/ip-reputation-api/overview
+  Example: GET https://ipqualityscore.com/api/json/ip/[API_KEY]/8.8.8.8
+
+API Keys
+----------
+You may use these keys or register new ones:
+AbuseIPDB: f94b904c9f414170343d0a5a61948dfbc0b55a6eaa0a50a3489e1e66b17ead6527975834e0d9000f
+IPQualityScore: mDdEouFdaAG4XvsfCmR6LAWTvARwyRb9
+
+Testing Requirements
+----------------------
+• Frontend: Unit test for your state logic or component rendering.
+• Backend: Unit test for your core logic (e.g., IP validation, API call aggregation).
+• Tools: Jest, React Testing Library, etc.
+
+Bonus
+------
+1. Risk Scoring & Highlighting: Combine abuse score, fraud score, and VPN/proxy flags into a single “Overall Risk Level” (Low/Medium/High) with color or icons.
+2. Persistent Search History: Save the user’s last 5–10 lookups locally using localStorage.
+3. Rate Limit Handling: Handle API 429 responses gracefully with a user-friendly message.
+
+What to Submit
+---------------
+Please provide either a GitHub repository link or ZIP archive including:
+• Full source code (frontend + backend)
+• README.md with setup instructions and API key configuration
+• .env file
+• All test files
+• Optional notes about your development approach or trade-offs
+
+Good luck!
