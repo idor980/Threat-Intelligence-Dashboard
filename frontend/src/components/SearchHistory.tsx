@@ -1,5 +1,6 @@
 import { Card, Button } from 'flowbite-react';
 import { Clock, Trash2 } from 'lucide-react';
+import { formatDistanceToNow, format } from 'date-fns';
 import { useIPCheckStore } from '@/store/ipCheckStore';
 import { getRiskLevel } from '@/utils/riskLevel';
 
@@ -13,16 +14,15 @@ export const SearchHistory = () => {
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
     const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
+    const hoursDiff = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays === 1) return 'Yesterday';
-    return date.toLocaleDateString();
+    // If less than 24 hours, show relative time
+    if (hoursDiff < 24) {
+      return formatDistanceToNow(date, { addSuffix: true });
+    }
+
+    // Otherwise show formatted date
+    return format(date, 'MMM d, yyyy');
   };
 
   return (
@@ -58,16 +58,14 @@ export const SearchHistory = () => {
 
           return (
             <button
-              key={item.id}
+              key={item.ipAddress}
               onClick={() => loadFromHistory(item)}
               className="w-full text-left p-3 rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all"
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-semibold text-gray-900">
-                      {item.ipAddress}
-                    </span>
+                    <span className="font-mono font-semibold text-gray-900">{item.ipAddress}</span>
                     <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${badgeColor}`}>
                       {risk.text}
                     </span>
@@ -76,9 +74,7 @@ export const SearchHistory = () => {
                     {item.data.country} • {item.data.isp}
                   </div>
                 </div>
-                <div className="text-xs text-gray-400 ml-2">
-                  {formatDate(item.timestamp)}
-                </div>
+                <div className="text-xs text-gray-400 ml-2">{formatDate(item.timestamp)}</div>
               </div>
             </button>
           );
@@ -87,4 +83,3 @@ export const SearchHistory = () => {
     </Card>
   );
 };
-

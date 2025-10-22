@@ -1,7 +1,6 @@
 import type { ThreatIntelligenceData } from '@shared/types';
 
 export type HistoryItem = {
-  id: string;
   ipAddress: string;
   timestamp: number;
   data: ThreatIntelligenceData;

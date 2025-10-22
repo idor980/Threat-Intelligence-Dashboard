@@ -13,15 +13,14 @@ export const useIPCheckStore = create<IPCheckState>((set) => ({
     set({ loading: true, error: null, data: null });
     try {
       const data = await checkIPAddress(ip, maxAgeInDays);
-      
+
       // Create history item
       const historyItem: HistoryItem = {
-        id: `${ip}-${Date.now()}`,
         ipAddress: ip,
         timestamp: Date.now(),
         data,
       };
-      
+
       // Add to history and update state
       const updatedHistory = addToHistory(historyItem);
       set({ data, loading: false, error: null, history: updatedHistory });
