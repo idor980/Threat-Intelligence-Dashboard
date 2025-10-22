@@ -118,7 +118,6 @@ GET /api/intel?ip=<ip_address>&maxAgeInDays=<days>
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint errors
 - `npm run format` - Format code with Prettier
 - `npm run test` - Run tests
 

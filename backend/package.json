@@ -5,12 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env --tsconfig tsconfig.json src/index.ts",
-    "start": "node --env-file=.env dist/index.js",
-    "build": "tsc && tsc-alias",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write \"src/**/*.{ts,js,json}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,js,json}\""
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
