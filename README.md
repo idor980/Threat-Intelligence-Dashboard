@@ -15,9 +15,8 @@ Full-stack application for checking IP addresses against multiple threat intelli
 # Install all dependencies (root, backend, frontend)
 npm run install:all
 
-# Configure backend (copy and update with your API keys)
+# Configure backend - copy .env.example and add your API keys (My keys are included for simplicity)
 cp backend/.env.example backend/.env
-# Edit backend/.env with your actual API keys
 
 # Run (in separate terminals)
 npm run dev:backend    # Backend: http://localhost:3000
