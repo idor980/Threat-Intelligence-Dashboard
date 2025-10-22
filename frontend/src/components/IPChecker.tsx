@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Button, TextInput, Label, Spinner } from 'flowbite-react';
+import { Card, Button, TextInput, Label } from 'flowbite-react';
 import { Search } from 'lucide-react';
 import { useIPCheckStore } from '@/store/ipCheckStore';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -62,11 +62,15 @@ export const IPChecker = () => {
                   color="gray"
                 />
                 {loading ? (
-                  <div className="flex flex-wrap items-center justify-center text-gray-200">
-                    <Spinner color="info" light />
+                  <div className="flex items-center justify-center px-8">
+                    <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
                   </div>
                 ) : (
-                  <Button onClick={handleCheck} size="lg" color="blue">
+                  <Button
+                    onClick={handleCheck}
+                    size="lg"
+                    className="px-4 bg-blue-500 hover:bg-blue-600 text-white"
+                  >
                     <Search className="w-5 h-5 mr-2" />
                     <span>Check</span>
                   </Button>
