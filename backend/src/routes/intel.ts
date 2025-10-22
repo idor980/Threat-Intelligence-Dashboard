@@ -2,6 +2,7 @@ import express from 'express';
 import { intelQuerySchema } from '@/validators/ipValidator.js';
 import { ThreatIntelligenceAggregator } from '@/services/aggregation.js';
 import { asyncHandler } from '@/utils/errorHandler.js';
+import { intelRateLimiter } from '@/middleware/rateLimiter.js';
 
 const router = express.Router();
 const aggregator = new ThreatIntelligenceAggregator();
@@ -15,9 +16,12 @@ const aggregator = new ThreatIntelligenceAggregator();
  * @param maxAgeInDays - Maximum age of reports in days (optional, default: 90, range: 1-365)
  *
  * @returns Aggregated threat intelligence data with risk level
+ *
+ * Rate Limit: 10 requests per minute per IP address
  */
 router.get(
   '/',
+  intelRateLimiter, // Apply rate limiting middleware
   asyncHandler(async (req, res) => {
     console.error('🎯 Route handler called! Query params:', req.query);
 

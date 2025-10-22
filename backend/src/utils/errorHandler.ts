@@ -21,10 +21,11 @@ export const errorHandler = (
   }
   // Handle known error messages
   else if (err.message) {
-    // Rate limit error
+    // Rate limit error (from client or external APIs)
     if (err.message.includes('Rate limit')) {
       statusCode = 429;
-      message = err.message;
+      message = 'Rate limit reached. Please try again later.';
+      console.error('⚠️ Rate limit error:', err.message);
     }
     // API key errors
     else if (err.message.includes('API key')) {
@@ -59,10 +60,10 @@ export const errorHandler = (
 
   // Send error response
   res.status(statusCode).json({
-    error: 'Error',
+    error: statusCode === 429 ? 'Rate Limit Error' : 'Error',
     message,
     statusCode,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    ...(process.env.NODE_ENV === 'development' && err.stack && { stack: err.stack }),
   });
 };
 
