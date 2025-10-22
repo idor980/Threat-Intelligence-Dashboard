@@ -153,3 +153,9 @@ IP validation occurs exclusively on the backend using Node's native `net.isIP()`
 **Trade-off:** Validation feedback requires a round-trip to the server. For this assignment, backend authority is prioritized for security validation.
 
 ---
+
+## 📝 Development Note
+
+Since the assignment did not mention any restrictions on using tools like **Cursor** or **ChatGPT**, I assumed it is acceptable to use them for **guidance, formatting, phrasing and answering questions** - as long as the usage is not excessive and it is clear that **the code was written by me**.
+
+---
