@@ -1,6 +1,6 @@
 import axios from 'axios';
-import type { IPQualityScoreResponse } from '@/types/index.js';
-import { handleProviderError } from '@/utils/apiErrorHandler.js';
+import type { IPQualityScoreResponse } from '@/types/ip-intel-types.js';
+import { handleProviderError } from '@/utils/error-handler.js';
 import { logger } from '@/utils/logger.js';
 
 const IPQUALITYSCORE_API_URL = 'https://ipqualityscore.com/api/json/ip';

@@ -1,7 +1,7 @@
 import express from 'express';
-import { intelQuerySchema } from '@/validators/ipValidator.js';
+import { intelQuerySchema } from '@/validators/ip.schema.js';
 import { ThreatIntelligenceAggregator } from '@/aggregators/threatIntelligence.js';
-import { intelRateLimiter } from '@/middleware/rateLimiter.js';
+import { ipCheckRateLimiter } from '@/utils/rate-limiter.js';
 import { logger } from '@/utils/logger.js';
 
 const router = express.Router();
@@ -9,7 +9,7 @@ const aggregator = new ThreatIntelligenceAggregator();
 
 router.get(
   '/',
-  intelRateLimiter, // Apply rate limiting middleware
+  ipCheckRateLimiter, // Apply rate limiting
   async (req, res) => {
     try {
       logger.debug({ query: req.query }, '🎯 Route handler called');
