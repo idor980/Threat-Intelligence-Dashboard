@@ -15,14 +15,12 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// API Routes
+// API Route
 app.use('/api/intel', intelRouter);
 
-// Start server (only if not in test mode)
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    logger.info(`🚀 Backend server running on http://localhost:${PORT}`);
-  });
-}
+// Start server
+app.listen(PORT, () => {
+  logger.info(`🚀 Backend server running on http://localhost:${PORT}`);
+});
 
 export { app };
