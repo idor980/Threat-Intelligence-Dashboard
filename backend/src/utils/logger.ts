@@ -2,7 +2,7 @@ import pino from 'pino';
 
 // logging library used: https://github.30-2636233/pino
 export const logger = pino({
-  level: 'debug',
+  level: process.env.LOG_LEVEL || 'debug',
   transport: {
     target: 'pino-pretty',
     options: {
