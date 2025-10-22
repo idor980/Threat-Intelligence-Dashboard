@@ -1,8 +1,6 @@
 import pino from 'pino';
 
-/**
- * Simple Pino logger with pretty colored output
- */
+// logging library used: https://github.30-2636233/pino
 export const logger = pino({
   level: 'debug',
   transport: {

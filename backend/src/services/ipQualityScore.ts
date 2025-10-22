@@ -15,11 +15,6 @@ export class IPQualityScoreService {
     }
   }
 
-  /**
-   * Check IP address for VPN/Proxy detection and fraud scoring
-   * @param ipAddress - IP address to check
-   * @returns Promise with IPQualityScore response data
-   */
   async checkIP(ipAddress: string): Promise<IPQualityScoreResponse> {
     try {
       const response = await axios.get(`${IPQUALITYSCORE_API_URL}/${this.apiKey}/${ipAddress}`, {

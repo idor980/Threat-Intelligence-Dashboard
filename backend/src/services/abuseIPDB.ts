@@ -15,11 +15,6 @@ export class AbuseIPDBService {
     }
   }
 
-  /**
-   * Check IP address for abuse reports
-   * @param ipAddress - IP address to check
-   * @returns Promise with AbuseIPDB response data
-   */
   async checkIP(ipAddress: string): Promise<AbuseIPDBResponse> {
     try {
       const response = await axios.get(`${ABUSEIPDB_API_URL}/check`, {

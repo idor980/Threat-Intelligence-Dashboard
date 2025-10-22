@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { intelRouter } from '@/routes/intel.js';
+import { intelRouter } from '@/routes/ip-check.js';
 import { logger } from '@/utils/logger.js';
 
 const app = express();
