@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { intelRouter } from '@/routes/intel.js';
+import { logger } from '@/utils/logger.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -8,7 +9,6 @@ const PORT = process.env.PORT || 3001;
 // Allows frontend (running on a different port/domain) to talk to backend.
 // Without this, browsers block cross-origin requests for security reasons.
 app.use(cors());
-
 
 // Health check endpoint
 app.get('/health', (_req, res) => {
@@ -21,7 +21,7 @@ app.use('/api/intel', intelRouter);
 // Start server (only if not in test mode)
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
-    console.log(`🚀 Backend server running on http://localhost:${PORT}`);
+    logger.info(`🚀 Backend server running on http://localhost:${PORT}`);
   });
 }
 

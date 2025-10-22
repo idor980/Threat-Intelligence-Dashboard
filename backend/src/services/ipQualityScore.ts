@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { IPQualityScoreResponse } from '@/types/index.js';
 import { handleProviderError } from '@/utils/apiErrorHandler.js';
+import { logger } from '@/utils/logger.js';
 
 const IPQUALITYSCORE_API_URL = 'https://ipqualityscore.com/api/json/ip';
 
@@ -34,8 +35,7 @@ export class IPQualityScoreService {
       });
 
       // Log the raw response from IPQualityScore
-      console.error('📥 IPQualityScore Raw Response:', JSON.stringify(response.data, null, 2));
-      console.error('✅ Response matches IPQualityScoreResponse type');
+      logger.debug({ response: response.data }, '🅱 IPQualityScore Raw Response');
 
       return response.data;
     } catch (error) {

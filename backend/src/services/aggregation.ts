@@ -2,6 +2,7 @@ import type { AbuseIPDBResponse, IPQualityScoreResponse } from '@/types/index.js
 import type { ThreatIntelligenceData } from '@shared/types.js';
 import { AbuseIPDBService } from '@/services/abuseIPDB.js';
 import { IPQualityScoreService } from '@/services/ipQualityScore.js';
+import { logger } from '@/utils/logger.js';
 
 /**
  * Aggregates threat intelligence data from multiple sources
@@ -26,10 +27,7 @@ export class ThreatIntelligenceAggregator {
     ipAddress: string,
     maxAgeInDays: number = 90
   ): Promise<ThreatIntelligenceData> {
-    console.error('\n========================================');
-    console.error('🔍 IP Address Query:', ipAddress);
-    console.error('📅 Max Age in Days:', maxAgeInDays);
-    console.error('========================================\n');
+    logger.info({ ipAddress, maxAgeInDays }, '🔍 Starting IP address threat intelligence query');
 
     // Fetch data from both APIs in parallel
     const [abuseData, ipQualityData] = await Promise.all([
@@ -61,11 +59,7 @@ export class ThreatIntelligenceAggregator {
     };
 
     // Log the transformation
-    console.error(
-      '🔄 Transformed to ThreatIntelligenceData:',
-      JSON.stringify(transformedData, null, 2)
-    );
-    console.error('✅ Response matches ThreatIntelligenceData type\n');
+    logger.debug({ data: transformedData }, '🔄 Transformed to ThreatIntelligenceData');
 
     return transformedData;
   }

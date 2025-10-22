@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { AbuseIPDBResponse } from '@/types/index.js';
 import { handleProviderError } from '@/utils/apiErrorHandler.js';
+import { logger } from '@/utils/logger.js';
 
 const ABUSEIPDB_API_URL = 'https://api.abuseipdb.com/api/v2';
 
@@ -36,8 +37,7 @@ export class AbuseIPDBService {
       });
 
       // Log the raw response from AbuseIPDB
-      console.error('📥 AbuseIPDB Raw Response:', JSON.stringify(response.data, null, 2));
-      console.error('✅ Response matches AbuseIPDBResponse type');
+      logger.debug({ response: response.data }, '🅰 AbuseIPDB Raw Response');
 
       return response.data;
     } catch (error) {
