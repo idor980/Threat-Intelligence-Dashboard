@@ -3,3 +3,4 @@ export { IPChecker } from './IPChecker';
 export { ErrorAlert } from './ErrorAlert';
 export { ThreatDataDisplay } from './ThreatDataDisplay';
 export { Header } from './Header';
+export { SearchHistory } from './SearchHistory';

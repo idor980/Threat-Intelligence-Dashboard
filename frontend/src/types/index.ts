@@ -1,10 +1,20 @@
 import type { ThreatIntelligenceData } from '@shared/types';
 
+export type HistoryItem = {
+  id: string;
+  ipAddress: string;
+  timestamp: number;
+  data: ThreatIntelligenceData;
+};
+
 export type IPCheckState = {
   data: ThreatIntelligenceData | null;
   loading: boolean;
   error: string | null;
+  history: HistoryItem[];
   checkIP: (ip: string, maxAgeInDays?: number) => Promise<void>;
+  loadFromHistory: (item: HistoryItem) => void;
+  clearHistory: () => void;
   setError: (error: string) => void;
   clearError: () => void;
   reset: () => void;
