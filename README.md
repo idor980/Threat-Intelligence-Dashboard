@@ -1,6 +1,6 @@
 # Threat Intelligence Dashboard
 
-Full-stack application for checking IP addresses against multiple threat intelligence sources (AbuseIPDB + IPQualityScore).
+Full-stack application for checking IP addresses against threat intelligence sources (AbuseIPDB + IPQualityScore).
 
 ## 🚀 Quick Start
 
@@ -9,16 +9,18 @@ Full-stack application for checking IP addresses against multiple threat intelli
 - Node.js 18+
 - API keys for [AbuseIPDB](https://www.abuseipdb.com/api.html) and [IPQualityScore](https://www.ipqualityscore.com/)
 
+**Note:** Working API keys are provided in `.env.example` for easy testing.
+
 ### Setup
 
 ```bash
 # Install all dependencies (root, backend, frontend)
 npm run install:all
 
-# Configure backend - copy .env.example and add your API keys (My keys are included for simplicity)
+# Configure backend
 cp backend/.env.example backend/.env
 
-# Run (in separate terminals)
+# Run in separate terminals
 npm run dev:backend    # Backend: http://localhost:3000
 npm run dev:frontend   # Frontend: http://localhost:5173
 ```
@@ -49,56 +51,17 @@ threat-intelligence-dashboard/
 └── shared/      # Shared TypeScript types
 ```
 
+**Detailed Documentation:**
+
+- [Frontend README](./frontend/README.md) - Components, state management, UI/UX
+- [Backend README](./backend/README.md) - API endpoints, security, logging
+
 **Key Patterns:**
 
 - Layered architecture: Routes → Aggregators → Clients
 - Parallel API calls with `Promise.all()`
 - Centralized error handling
 - Shared types between frontend/backend
-
----
-
-## 🔑 Design Decisions
-
-### 1. Fail-All API Aggregation
-
-Both APIs must succeed, or the request fails.
-
-**Why?**
-
-- Threat intelligence requires **complete data** for accurate risk assessment
-- Missing abuse scores OR VPN detection could mislead users about IP safety
-- Simpler error handling with no partial-data ambiguity
-
-**Trade-off:** Service unavailable if one API is down, but accuracy > availability for security data.
-
----
-
-### 2. No Caching (Always Fresh Data)
-
-Every check fetches fresh data from external APIs.
-
-**Why?**
-
-- Threat intelligence is time-sensitive (scores change as new reports arrive)
-- Users expect current data when clicking "Check"
-- History feature lets users revisit past results
-
-**Trade-off:** Higher API quota usage, but guarantees up-to-date security information.
-
----
-
-### 3. Backend-Only Validation
-
-IP validation happens only on the backend using Node's native `net.isIP()`.
-
-**Why?**
-
-- Single source of truth (no duplicate validation logic)
-- Node's built-in validator is reliable and available only server-side
-- Separation of concerns (frontend = UX, backend = business logic)
-
-**Trade-off:** Validation feedback after API call instead of instant client-side, but backend remains authoritative.
 
 ---
 
@@ -110,12 +73,13 @@ IP validation happens only on the backend using Node's native `net.isIP()`.
 - Aggregated threat data from AbuseIPDB + IPQualityScore
 - Clean, unified response format
 - Error handling & rate limiting
+- Unit tests for frontend and backend
 
 ✅ **Bonus Features:**
 
 - Risk scoring with color-coded levels (Minimal/Low/Medium/High)
 - Persistent search history (last 10 in localStorage)
-- Graceful rate limit handling
+- Graceful rate limit handling (429 responses)
 
 ---
 
@@ -140,42 +104,52 @@ IP validation happens only on the backend using Node's native `net.isIP()`.
 
 ### `GET /health`
 
-Server health check.
+Health check endpoint.
 
 ---
 
-## 📝 Development Notes
+## 📋 Implementation Decisions
 
-**Code Quality:**
+These are design choices made specifically for this assignment. They reflect trade-offs appropriate for the scope and requirements of the task.
 
-- TypeScript strict mode
-- ESLint + consistent formatting
-- Meaningful tests (not just coverage)
-- Structured logging (Pino)
+### 1. Fail-All API Aggregation
 
-**Security:**
+Both AbuseIPDB and IPQualityScore must succeed, or the entire request fails.
 
-- Environment-based API keys
-- Rate limiting (10 req/min)
-- 10s request timeouts
-- CORS configuration
+**Rationale:**
 
----
+- Ensures complete threat intelligence data for accurate risk assessment
+- Prevents misleading users with partial data (e.g., missing VPN detection)
+- Simplifies error handling by avoiding partial-data states
 
-## 🔮 Production Considerations
-
-If scaling to production, consider:
-
-- Graceful degradation with `Promise.allSettled()`
-- Response caching with TTL
-- Database-backed history
-- Circuit breakers for API failures
-- User authentication
-- Bulk IP checking
+**Trade-off:** Service becomes unavailable if either API is down. For this assignment, data accuracy is prioritized over availability.
 
 ---
 
-## 👤 Author
+### 2. No Caching (Always Fresh Data)
 
-Ido Ronen  
-Home Assignment - Full-Stack Developer Position
+Every IP check fetches fresh data from external APIs without caching.
+
+**Rationale:**
+
+- Threat intelligence is time-sensitive (scores update as new abuse reports arrive)
+- Users expect real-time data when clicking "Check"
+- Search history provides a way to review past results
+
+**Trade-off:** Higher API quota consumption. For this assignment, freshness is prioritized to demonstrate real-time threat intelligence.
+
+---
+
+### 3. Backend-Only Validation
+
+IP validation occurs exclusively on the backend using Node's native `net.isIP()`.
+
+**Rationale:**
+
+- Single source of truth prevents duplicate validation logic
+- Node.js built-in validator is reliable and only available server-side
+- Keeps business logic separate from UI concerns
+
+**Trade-off:** Validation feedback requires a round-trip to the server. For this assignment, backend authority is prioritized for security validation.
+
+---
