@@ -1,276 +1,123 @@
 # Threat Intelligence Dashboard
 
-A full-stack application for checking IP addresses against multiple threat intelligence sources.
+Full-stack application for checking IP addresses against multiple threat intelligence sources (AbuseIPDB + IPQualityScore).
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+
+- API keys for [AbuseIPDB](https://www.abuseipdb.com/api.html) and [IPQualityScore](https://www.ipqualityscore.com/)
+
+### Setup
+
+```bash
+# Install dependencies
+npm install
+cd backend && npm install
+cd ../frontend && npm install
+
+# Configure backend (create backend/.env)
+ABUSEIPDB_API_KEY=your_key_here
+IPQUALITYSCORE_API_KEY=your_key_here
+PORT=3000
+
+# Run (in separate terminals)
+cd backend && npm run dev    # Backend: http://localhost:3000
+cd frontend && npm run dev   # Frontend: http://localhost:5173
+```
+
+### Testing
+
+```bash
+cd backend && npm test
+cd frontend && npm test
+```
+
+---
 
 ## 🏗️ Architecture
 
-### Tech Stack
+**Tech Stack:**
+- **Frontend**: React 19 + TypeScript + Vite + Zustand + Tailwind CSS
+- **Backend**: Node.js + Express 5 + TypeScript + Zod + Pino
 
-- **Frontend**: React + TypeScript + Vite
-- **Backend**: Node.js + Express + TypeScript
-- **State Management**: Zustand
-- **API Clients**: Axios
-- **Validation**: Zod
-
-### Project Structure
-
+**Structure:**
 ```
 threat-intelligence-dashboard/
-├── frontend/          # React application
-├── backend/           # Node.js BFF (Backend-for-Frontend)
-└── shared/            # Shared TypeScript types
+├── frontend/    # React app with Zustand state management
+├── backend/     # Express BFF (Backend-for-Frontend)
+└── shared/      # Shared TypeScript types
 ```
 
-## 🔑 Key Design Decisions
-
-### 1. Always Fetch Fresh Data (No Caching)
-
-Each IP lookup triggers a new API call to the external services instead of serving cached results.
-
-**Rationale:**
-
-- **Time-Sensitive Data**: Threat intelligence values (abuse scores, VPN/proxy flags, etc.) can change frequently as new reports arrive.
-- **Transparency**: Each result includes a timestamp so users know exactly when it was fetched.
-- **User Intent**: The history panel allows revisiting past results, while "Check" explicitly requests a fresh lookup.
-
-**Trade-off:**
-This approach consumes more API quota but guarantees up-to-date information.
-_(In production, a caching layer or TTL-based refresh strategy could balance accuracy and efficiency.)_
+**Key Patterns:**
+- Layered architecture: Routes → Aggregators → Clients
+- Parallel API calls with `Promise.all()`
+- Centralized error handling
+- Shared types between frontend/backend
 
 ---
 
-### 2. Backend-Only IP Validation
+## 🔑 Design Decisions
 
-IP format validation is handled exclusively on the backend, not duplicated in the frontend.
+### 1. Fail-All API Aggregation
 
-**Rationale:**
+Both APIs must succeed, or the request fails.
 
-- **Single Source of Truth**: Uses Node's native `net.isIP()` for reliable, centralized validation.
-- **Separation of Concerns**: The frontend focuses on user interaction and display; the backend enforces logic and data integrity.
-- **Simplicity**: Avoids maintaining different validation approaches or custom regex logic, since Node's `net` library is only available on the backend.
+**Why?**
+- Threat intelligence requires **complete data** for accurate risk assessment
+- Missing abuse scores OR VPN detection could mislead users about IP safety
+- Simpler error handling with no partial-data ambiguity
 
-**Trade-off:**
-Users receive validation feedback only after the backend request.
-_(In production, client-side pre-validation could improve UX, but backend validation would remain authoritative.)_
-
----
-
-### Fail-All Approach for API Aggregation
-
-**This application uses a "fail-all" strategy** when aggregating data from external threat intelligence APIs (AbuseIPDB and IPQualityScore).
-
-#### Why Fail-All?
-
-1. **Data Completeness for Accurate Risk Assessment**
-   - A threat intelligence dashboard requires complete data to provide accurate risk assessments
-   - Missing the abuse score OR VPN/threat detection could lead to misleading conclusions
-   - Partial data might give users false confidence about IP safety
-
-2. **Core Requirement Fulfillment**
-   - Both APIs provide essential, non-overlapping data:
-     - **AbuseIPDB**: Abuse confidence score, recent reports, geolocation
-     - **IPQualityScore**: VPN/Proxy detection, fraud score
-   - Neither API alone provides sufficient information
-
-3. **Simplified Error Handling**
-   - Clear error messages inform users when data is unavailable
-   - No ambiguity about data completeness
-   - Easier to maintain and debug
-
-4. **Implementation**
-   ```typescript
-   // Using Promise.all() - fails fast if any API fails
-   const [abuseData, ipQualityData] = await Promise.all([
-     this.abuseIPDBService.checkIP(ipAddress),
-     this.ipQualityScoreService.checkIP(ipAddress),
-   ]);
-   ```
-
-#### Trade-offs Considered
-
-**Pros:**
-
-- ✅ Guarantees data completeness
-- ✅ Simpler codebase
-- ✅ Clear error states
-- ✅ No ambiguous risk assessments
-
-**Cons:**
-
-- ❌ Service unavailable if one API is down
-- ❌ No partial data fallback
-
-**Verdict**: For this threat intelligence use case, **data accuracy is more important than availability**. The fail-all approach is the right choice.
+**Trade-off:** Service unavailable if one API is down, but accuracy > availability for security data.
 
 ---
 
-## 🚀 Getting Started
+### 2. No Caching (Always Fresh Data)
 
-### Prerequisites
+Every check fetches fresh data from external APIs.
 
-- Node.js 18+ and npm
-- API Keys for:
-  - [AbuseIPDB](https://www.abuseipdb.com/api.html)
-  - [IPQualityScore](https://www.ipqualityscore.com/documentation/ip-reputation-api/overview)
+**Why?**
+- Threat intelligence is time-sensitive (scores change as new reports arrive)
+- Users expect current data when clicking "Check"
+- History feature lets users revisit past results
 
-### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone <repository-url>
-   cd threat-intelligence-dashboard
-   ```
-
-2. **Install root dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Install backend dependencies**
-
-   ```bash
-   cd backend
-   npm install
-   ```
-
-4. **Install frontend dependencies**
-   ```bash
-   cd ../frontend
-   npm install
-   ```
-
-### Configuration
-
-Create a `.env` file in the `backend` directory:
-
-```bash
-cd backend
-cat > .env << EOF
-# Server Configuration
-PORT=3000
-NODE_ENV=development
-
-# API Keys
-ABUSEIPDB_API_KEY=your_abuseipdb_api_key_here
-IPQUALITYSCORE_API_KEY=your_ipqualityscore_api_key_here
-
-# Rate Limiting
-RATE_LIMIT_WINDOW_MS=60000
-RATE_LIMIT_MAX_REQUESTS=10
-EOF
-```
-
-**API Keys for Testing** (provided in assignment):
-
-- AbuseIPDB: `f94b904c9f414170343d0a5a61948dfbc0b55a6eaa0a50a3489e1e66b17ead6527975834e0d9`
-- IPQualityScore: `mDdEouFdaAG4XvsfCmR6LAWTvARwyRb9`
-
-### Running the Application
-
-#### Development Mode
-
-**Terminal 1 - Backend:**
-
-```bash
-cd backend
-npm run dev
-```
-
-Backend will run on `http://localhost:3000`
-
-**Terminal 2 - Frontend:**
-
-```bash
-cd frontend
-npm run dev
-```
-
-Frontend will run on `http://localhost:5173`
-
-#### Production Build
-
-**Backend:**
-
-```bash
-cd backend
-npm run build
-npm start
-```
-
-**Frontend:**
-
-```bash
-cd frontend
-npm run build
-npm run preview
-```
+**Trade-off:** Higher API quota usage, but guarantees up-to-date security information.
 
 ---
 
-## 🧪 Testing
+### 3. Backend-Only Validation
 
-### Run Backend Tests
+IP validation happens only on the backend using Node's native `net.isIP()`.
 
-```bash
-cd backend
-npm test
-```
+**Why?**
+- Single source of truth (no duplicate validation logic)
+- Node's built-in validator is reliable and available only server-side
+- Separation of concerns (frontend = UX, backend = business logic)
 
-### Run Frontend Tests
-
-```bash
-cd frontend
-npm test
-```
+**Trade-off:** Validation feedback after API call instead of instant client-side, but backend remains authoritative.
 
 ---
 
 ## 📊 Features
 
-### Core Features
+✅ **Core Requirements:**
+- IP validation (IPv4/IPv6)
+- Aggregated threat data from AbuseIPDB + IPQualityScore
+- Clean, unified response format
+- Error handling & rate limiting
 
-- ✅ IP address validation (IPv4 and IPv6)
-- ✅ Real-time threat intelligence aggregation
-- ✅ Data from multiple sources (AbuseIPDB + IPQualityScore)
-- ✅ Clean, unified data format
-- ✅ Comprehensive error handling
-- ✅ Rate limiting protection
-
-### Bonus Features
-
-- ✅ **Risk Scoring & Highlighting**: Visual color-coded risk levels (Low/Medium/High)
-- ✅ **Persistent Search History**: Last 10 searches stored in localStorage
-- ✅ **Rate Limit Handling**: Graceful error messages for API rate limits
-
-### Data Fields Displayed
-
-| Field              | Source         | Description               |
-| ------------------ | -------------- | ------------------------- |
-| IP Address         | Input          | The validated IP address  |
-| Hostname           | Both           | Hostname if available     |
-| ISP                | Both           | Internet Service Provider |
-| Country            | AbuseIPDB      | Geolocation country       |
-| Abuse Score        | AbuseIPDB      | Abuse confidence (0-100)  |
-| Recent Reports     | AbuseIPDB      | Number of abuse reports   |
-| VPN/Proxy Detected | IPQualityScore | VPN/Proxy detection       |
-| Threat Score       | IPQualityScore | Fraud/threat score        |
+✅ **Bonus Features:**
+- Risk scoring with color-coded levels (Minimal/Low/Medium/High)
+- Persistent search history (last 10 in localStorage)
+- Graceful rate limit handling
 
 ---
 
-## 🛠️ API Endpoints
+## 🛠️ API Reference
 
-### Backend BFF API
-
-#### Check IP Address
-
-```http
-GET /api/ip-check?ip=8.8.8.8
-```
+### `GET /api/intel?ip=<address>`
 
 **Response:**
-
 ```json
 {
   "ipAddress": "8.8.8.8",
@@ -284,87 +131,41 @@ GET /api/ip-check?ip=8.8.8.8
 }
 ```
 
-#### Health Check
+### `GET /health`
 
-```http
-GET /api/health
-```
-
----
-
-## 🎨 Frontend Components
-
-- **IPCheck**: Main input form and search functionality
-- **ThreatData**: Displays threat intelligence results with risk visualization
-- **History**: Shows recent search history with quick re-check
-- **ErrorDisplay**: User-friendly error messages
-- **PageHeader**: Application branding and navigation
+Server health check.
 
 ---
 
 ## 📝 Development Notes
 
-### Code Quality
+**Code Quality:**
+- TypeScript strict mode
+- ESLint + consistent formatting
+- Meaningful tests (not just coverage)
+- Structured logging (Pino)
 
-- TypeScript strict mode enabled
-- ESLint configured for both frontend and backend
-- Shared types between frontend and backend
-- Consistent error handling patterns
-- Structured logging with Pino
-
-### Security Considerations
-
-- Input validation on both client and server
-- API keys stored in environment variables
-- Rate limiting to prevent abuse
-- Timeout protection for external API calls
-- CORS configured for local development
-
-### Performance Optimizations
-
-- Parallel API calls with `Promise.all()`
-- Request timeouts (10s) to prevent hanging
-- Efficient state management with Zustand
-- localStorage for persistent history
+**Security:**
+- Environment-based API keys
+- Rate limiting (10 req/min)
+- 10s request timeouts
+- CORS configuration
 
 ---
 
-## 🔮 Future Enhancements
+## 🔮 Production Considerations
 
-If this were a production application, consider:
-
-1. **Graceful Degradation**
-   - Use `Promise.allSettled()` for partial data fallback
-   - Implement circuit breakers for failing APIs
-   - Cache responses to reduce API calls
-
-2. **Enhanced Features**
-   - Database storage for search history
-   - User authentication and personal dashboards
-   - Bulk IP checking
-   - Export results to CSV/PDF
-   - Real-time monitoring and alerts
-
-3. **Observability**
-   - Application performance monitoring (APM)
-   - Structured logging aggregation
-   - API health dashboards
-   - Usage analytics
-
----
-
-## 📄 License
-
-This project is part of a home assignment for a Full-Stack Developer position.
+If scaling to production, consider:
+- Graceful degradation with `Promise.allSettled()`
+- Response caching with TTL
+- Database-backed history
+- Circuit breakers for API failures
+- User authentication
+- Bulk IP checking
 
 ---
 
 ## 👤 Author
 
-Ido Ronen
-
----
-
-## 📞 Support
-
-For questions or issues, please contact the development team.
+Ido Ronen  
+Home Assignment - Full-Stack Developer Position
