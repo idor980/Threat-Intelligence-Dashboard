@@ -5,5 +5,6 @@ export type IPCheckState = {
   loading: boolean;
   error: string | null;
   checkIP: (ip: string, maxAgeInDays?: number) => Promise<void>;
+  clearError: () => void;
   reset: () => void;
 };

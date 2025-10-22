@@ -18,6 +18,10 @@ export const useIPCheckStore = create<IPCheckState>((set) => ({
     }
   },
 
+  clearError: () => {
+    set({ error: null });
+  },
+
   reset: () => {
     set({ data: null, loading: false, error: null });
   },
