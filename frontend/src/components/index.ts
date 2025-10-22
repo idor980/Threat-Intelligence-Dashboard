@@ -1,4 +1,3 @@
-// Component exports for easier imports
 export { IPChecker } from './ip-check';
 export { ErrorAlert } from './error-display';
 export { ThreatDataDisplay } from './threat-data';
