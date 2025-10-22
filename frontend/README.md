@@ -1,73 +1,134 @@
-# React + TypeScript + Vite
+# Threat Intelligence Dashboard - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React-based web application for checking IP addresses against threat intelligence databases.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔍 **IP Address Lookup**: Check any IP address for threat intelligence data
+- 🎯 **Risk Assessment**: Get abuse scores and risk levels for IP addresses
+- 🌍 **Location & ISP Info**: View geographical and ISP information
+- 🚨 **Threat Indicators**: See recent abuse reports, VPN detection, and threat scores
+- ⚡ **Real-time Updates**: Instant feedback with loading and error states
+- 🎨 **Modern UI**: Beautiful interface built with Flowbite React and Tailwind CSS
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 19** - UI framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+- **Zustand** - State management
+- **Flowbite React** - UI component library
+- **Tailwind CSS** - Styling
+- **Axios** - HTTP client
+- **Lucide React** - Icons
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js 18+ 
+- npm or yarn
+- Backend API running (default: http://localhost:3001)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+Create a `.env` file in the frontend directory (or copy from `.env.example`):
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```env
+VITE_API_BASE_URL=http://localhost:3001
 ```
+
+### Development
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`
+
+### Build
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```
+src/
+├── components/         # React components
+│   └── IPChecker.tsx  # Main IP checker component
+├── services/          # API services
+│   └── api.ts        # Axios configuration and API calls
+├── store/            # Zustand stores
+│   └── ipCheckStore.ts # IP check state management
+├── types/            # TypeScript type definitions
+│   └── index.ts      # Shared types
+├── App.tsx           # Main app component
+└── main.tsx          # Application entry point
+```
+
+## Usage
+
+1. Enter an IP address in the input field (e.g., `8.8.8.8`)
+2. Click the "Check" button or press Enter
+3. View the threat intelligence results including:
+   - Abuse confidence score
+   - Risk level assessment
+   - Country and ISP information
+   - Recent abuse reports
+   - VPN detection status
+   - Threat score
+
+## State Management
+
+The application uses Zustand for state management with the following store:
+
+- `ipCheckStore`: Manages IP check state (data, loading, error)
+  - `checkIP(ip: string, maxAgeInDays?: number)`: Fetches threat data for an IP
+  - `reset()`: Resets the state
+
+## API Integration
+
+The frontend communicates with the backend API at `/api/intel`:
+
+```typescript
+GET /api/intel?ip=<ip_address>&maxAgeInDays=<days>
+```
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint errors
+- `npm run format` - Format code with Prettier
+- `npm run test` - Run tests
+
+## Contributing
+
+1. Follow the existing code style
+2. Use TypeScript for type safety
+3. Write meaningful commit messages
+4. Test your changes before submitting
+
+## License
+
+See the main project LICENSE file.
