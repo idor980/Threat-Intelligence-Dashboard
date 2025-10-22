@@ -11,10 +11,8 @@ Full-stack application for checking IP addresses against multiple threat intelli
 ### Setup
 
 ```bash
-# Install dependencies
-npm install
-cd backend && npm install
-cd ../frontend && npm install
+# Install all dependencies (root, backend, frontend)
+npm run install:all
 
 # Configure backend (create backend/.env)
 ABUSEIPDB_API_KEY=your_key_here
@@ -22,8 +20,8 @@ IPQUALITYSCORE_API_KEY=your_key_here
 PORT=3000
 
 # Run (in separate terminals)
-cd backend && npm run dev    # Backend: http://localhost:3000
-cd frontend && npm run dev   # Frontend: http://localhost:5173
+npm run dev:backend    # Backend: http://localhost:3000
+npm run dev:frontend   # Frontend: http://localhost:5173
 ```
 
 ### Testing
