@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ThreatIntelligenceData, ErrorResponse } from '@/types';
+import type { ThreatIntelligenceData, ErrorResponse } from '@shared/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
@@ -16,7 +16,7 @@ export const checkIPAddress = async (
   maxAgeInDays: number = 90
 ): Promise<ThreatIntelligenceData> => {
   try {
-    const response = await api.get<ThreatIntelligenceData>('/api/intel', {
+    const response = await api.get('/api/intel', {
       params: { ip, maxAgeInDays },
     });
     return response.data;
@@ -28,4 +28,3 @@ export const checkIPAddress = async (
     throw new Error('Network error. Please try again.');
   }
 };
-

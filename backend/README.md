@@ -104,7 +104,7 @@ curl "http://localhost:3001/api/intel?ip=8.8.8.8&maxAgeInDays=90"
 ```json
 {
   "error": "Error",
-  "message": "Invalid IP address format. Must be a valid IPv4 or IPv6 address.",
+  "message": "ddress format. Must be a valid IPv4 or IPv6 address.",
   "statusCode": 400
 }
 ```

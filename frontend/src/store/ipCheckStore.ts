@@ -22,4 +22,3 @@ export const useIPCheckStore = create<IPCheckState>((set) => ({
     set({ data: null, loading: false, error: null });
   },
 }));
-

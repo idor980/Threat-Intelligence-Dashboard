@@ -1,8 +1,5 @@
-import type {
-  AbuseIPDBResponse,
-  IPQualityScoreResponse,
-  ThreatIntelligenceData,
-} from '@/types/index.js';
+import type { AbuseIPDBResponse, IPQualityScoreResponse } from '@/types/index.js';
+import type { ThreatIntelligenceData } from '@shared/types.js';
 import { AbuseIPDBService } from '@/services/abuseIPDB.js';
 import { IPQualityScoreService } from '@/services/ipQualityScore.js';
 

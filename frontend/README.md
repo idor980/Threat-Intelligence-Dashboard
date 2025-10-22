@@ -24,7 +24,7 @@ A modern React-based web application for checking IP addresses against threat in
 
 ## Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Backend API running (default: http://localhost:3001)
 

@@ -1,20 +1,4 @@
-// Frontend types matching backend response
-export type ThreatIntelligenceData = {
-  ipAddress: string;
-  hostname?: string;
-  isp: string;
-  country: string;
-  abuseScore: number;
-  recentReports: number;
-  vpnDetected?: boolean;
-  threatScore?: number;
-};
-
-export type ErrorResponse = {
-  error: string;
-  message: string;
-  statusCode: number;
-};
+import type { ThreatIntelligenceData } from '@shared/types';
 
 export type IPCheckState = {
   data: ThreatIntelligenceData | null;
@@ -23,4 +7,3 @@ export type IPCheckState = {
   checkIP: (ip: string, maxAgeInDays?: number) => Promise<void>;
   reset: () => void;
 };
-

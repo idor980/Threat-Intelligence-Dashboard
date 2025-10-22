@@ -5,11 +5,13 @@ import { useIPCheckStore } from '@/store/ipCheckStore';
 
 export const IPChecker = () => {
   const [ipInput, setIpInput] = useState('');
-  const { data, loading, error, checkIP, reset } = useIPCheckStore();
+  const { data, loading, error, checkIP } = useIPCheckStore();
 
   const handleCheck = () => {
-    if (ipInput.trim()) {
-      checkIP(ipInput.trim());
+    const trimmedIP = ipInput.trim();
+    if (trimmedIP) {
+      // Backend validates the IP address - no need for frontend validation
+      checkIP(trimmedIP);
     }
   };
 
@@ -21,8 +23,10 @@ export const IPChecker = () => {
 
   const getRiskLevel = (abuseScore: number): { text: string; color: string; bgColor: string } => {
     if (abuseScore >= 75) return { text: 'High Risk', color: 'text-red-600', bgColor: 'bg-red-50' };
-    if (abuseScore >= 50) return { text: 'Medium Risk', color: 'text-orange-600', bgColor: 'bg-orange-50' };
-    if (abuseScore >= 25) return { text: 'Low Risk', color: 'text-yellow-600', bgColor: 'bg-yellow-50' };
+    if (abuseScore >= 50)
+      return { text: 'Medium Risk', color: 'text-orange-600', bgColor: 'bg-orange-50' };
+    if (abuseScore >= 25)
+      return { text: 'Low Risk', color: 'text-yellow-600', bgColor: 'bg-yellow-50' };
     return { text: 'Minimal Risk', color: 'text-green-600', bgColor: 'bg-green-50' };
   };
 
@@ -32,11 +36,9 @@ export const IPChecker = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <Shield className="w-12 h-12 text-blue-600" />
+            <Shield className="w-20 h-20 text-blue-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Threat Intelligence Dashboard
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Threat Intelligence Dashboard</h1>
           <p className="text-gray-600">
             Check IP addresses for threat intelligence and abuse reports
           </p>
@@ -61,7 +63,7 @@ export const IPChecker = () => {
                   disabled={loading}
                   className="flex-1"
                   sizing="lg"
-                  style={{ color: '#111827' }}
+                  color="gray"
                 />
                 <Button
                   onClick={handleCheck}
@@ -86,7 +88,7 @@ export const IPChecker = () => {
 
             {/* Error State */}
             {error && (
-              <Alert color="failure" icon={AlertTriangle}>
+              <Alert color="failure" icon={AlertTriangle} className="text-red-500">
                 <span className="font-medium">Error:</span> {error}
               </Alert>
             )}
@@ -95,12 +97,12 @@ export const IPChecker = () => {
             {data && (
               <div className="space-y-4">
                 {/* Risk Overview */}
-                <div className={`${getRiskLevel(data.abuseScore).bgColor} border-2 ${getRiskLevel(data.abuseScore).color.replace('text', 'border')} rounded-lg p-6`}>
+                <div
+                  className={`${getRiskLevel(data.abuseScore).bgColor} border-2 ${getRiskLevel(data.abuseScore).color.replace('text', 'border')} rounded-lg p-6`}
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-gray-900">
-                        {data.ipAddress}
-                      </h3>
+                      <h3 className="text-2xl font-bold text-gray-900">{data.ipAddress}</h3>
                       <p className="text-gray-600 mt-1">
                         {data.hostname || 'No hostname available'}
                       </p>
@@ -109,7 +111,9 @@ export const IPChecker = () => {
                       <div className={`text-4xl font-bold ${getRiskLevel(data.abuseScore).color}`}>
                         {data.abuseScore}%
                       </div>
-                      <div className={`text-sm font-semibold mt-1 ${getRiskLevel(data.abuseScore).color}`}>
+                      <div
+                        className={`text-sm font-semibold mt-1 ${getRiskLevel(data.abuseScore).color}`}
+                      >
                         {getRiskLevel(data.abuseScore).text}
                       </div>
                     </div>
@@ -150,7 +154,9 @@ export const IPChecker = () => {
                       {data.vpnDetected !== undefined && (
                         <div className="flex justify-between items-center">
                           <span className="text-gray-600">VPN Detected:</span>
-                          <span className={`font-semibold ${data.vpnDetected ? 'text-orange-600' : 'text-green-600'}`}>
+                          <span
+                            className={`font-semibold ${data.vpnDetected ? 'text-orange-600' : 'text-green-600'}`}
+                          >
                             {data.vpnDetected ? 'Yes' : 'No'}
                           </span>
                         </div>
@@ -164,20 +170,6 @@ export const IPChecker = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Action Button */}
-                <div className="flex justify-center pt-2">
-                  <Button
-                    onClick={() => {
-                      reset();
-                      setIpInput('');
-                    }}
-                    color="light"
-                    size="md"
-                  >
-                    Check Another IP
-                  </Button>
-                </div>
               </div>
             )}
           </div>
@@ -186,4 +178,3 @@ export const IPChecker = () => {
     </div>
   );
 };
-
