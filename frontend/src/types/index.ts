@@ -11,7 +11,7 @@ export type IPCheckState = {
   loading: boolean;
   error: string | null;
   history: HistoryItem[];
-  checkIP: (ip: string, maxAgeInDays?: number) => Promise<void>;
+  checkIP: (ip: string) => Promise<void>;
   loadFromHistory: (item: HistoryItem) => void;
   clearHistory: () => void;
   setError: (error: string) => void;

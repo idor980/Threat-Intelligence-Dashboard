@@ -18,15 +18,13 @@ export class AbuseIPDBService {
   /**
    * Check IP address for abuse reports
    * @param ipAddress - IP address to check
-   * @param maxAgeInDays - Maximum age of reports to retrieve (1-365 days)
    * @returns Promise with AbuseIPDB response data
    */
-  async checkIP(ipAddress: string, maxAgeInDays: number = 90): Promise<AbuseIPDBResponse> {
+  async checkIP(ipAddress: string): Promise<AbuseIPDBResponse> {
     try {
       const response = await axios.get(`${ABUSEIPDB_API_URL}/check`, {
         params: {
           ipAddress,
-          maxAgeInDays,
           verbose: true, // Get more detailed information
         },
         headers: {

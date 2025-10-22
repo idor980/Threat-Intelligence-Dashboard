@@ -1,6 +1,6 @@
 import express from 'express';
 import { intelQuerySchema } from '@/validators/ipValidator.js';
-import { ThreatIntelligenceAggregator } from '@/services/aggregation.js';
+import { ThreatIntelligenceAggregator } from '@/aggregators/threatIntelligence.js';
 import { intelRateLimiter } from '@/middleware/rateLimiter.js';
 import { logger } from '@/utils/logger.js';
 

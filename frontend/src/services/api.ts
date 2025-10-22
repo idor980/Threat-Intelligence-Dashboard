@@ -11,13 +11,10 @@ export const api = axios.create({
   },
 });
 
-export const checkIPAddress = async (
-  ip: string,
-  maxAgeInDays: number = 90
-): Promise<ThreatIntelligenceData> => {
+export const checkIPAddress = async (ip: string): Promise<ThreatIntelligenceData> => {
   try {
     const response = await api.get('/api/intel', {
-      params: { ip, maxAgeInDays },
+      params: { ip },
     });
     return response.data;
   } catch (error) {

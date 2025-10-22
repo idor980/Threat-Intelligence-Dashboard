@@ -18,14 +18,13 @@ export class IPQualityScoreService {
   /**
    * Check IP address for VPN/Proxy detection and fraud scoring
    * @param ipAddress - IP address to check
-   * @param strictness - Strictness level (0-3, where 0 is least strict)
    * @returns Promise with IPQualityScore response data
    */
-  async checkIP(ipAddress: string, strictness: number = 0): Promise<IPQualityScoreResponse> {
+  async checkIP(ipAddress: string): Promise<IPQualityScoreResponse> {
     try {
       const response = await axios.get(`${IPQUALITYSCORE_API_URL}/${this.apiKey}/${ipAddress}`, {
         params: {
-          strictness,
+          // strictness is default
           allow_public_access_points: 'true',
         },
         headers: {

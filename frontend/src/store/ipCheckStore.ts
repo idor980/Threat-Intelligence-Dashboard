@@ -9,10 +9,10 @@ export const useIPCheckStore = create<IPCheckState>((set) => ({
   error: null,
   history: loadHistory(),
 
-  checkIP: async (ip: string, maxAgeInDays: number = 90) => {
+  checkIP: async (ip: string) => {
     set({ loading: true, error: null, data: null });
     try {
-      const data = await checkIPAddress(ip, maxAgeInDays);
+      const data = await checkIPAddress(ip);
 
       // Create history item
       const historyItem: HistoryItem = {
