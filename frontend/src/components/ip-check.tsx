@@ -1,38 +1,32 @@
 import { useState } from 'react';
 import { Card, Button, TextInput, Label } from 'flowbite-react';
 import { Search } from 'lucide-react';
-import { useIPCheckStore } from '@/store/ipCheckStore';
-import { ErrorAlert } from '@/components/ErrorAlert';
-import { ThreatDataDisplay } from '@/components/ThreatDataDisplay';
-import { Header } from '@/components/Header';
-import { SearchHistory } from '@/components/SearchHistory';
+import { useIPCheckStore } from '@/store/ip-check-store';
+import { ErrorAlert } from '@/components/error-display';
+import { ThreatDataDisplay } from '@/components/threat-data';
+import { Header } from '@/components/page-header';
+import { SearchHistory } from '@/components/history';
 
 export const IPChecker = () => {
-  const [ipInput, setIpInput] = useState('');
+  const [ipAddress, setIpAddress] = useState('');
   const { data, loading, error, checkIP, setError, clearError } = useIPCheckStore();
 
-  const handleCheck = () => {
-    const trimmedIP = ipInput.trim();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmedIP = ipAddress.trim();
+
     if (!trimmedIP) {
       setError('Please enter an IP address');
       return;
     }
-    clearError();
+
     checkIP(trimmedIP);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIpInput(e.target.value);
-    // Clear errors when user starts typing
-    if (error) {
-      clearError();
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !loading) {
-      handleCheck();
-    }
+    setIpAddress(e.target.value);
+    // Clear error when user starts typing
+    if (error) clearError();
   };
 
   return (
@@ -43,7 +37,7 @@ export const IPChecker = () => {
 
         {/* Main Card */}
         <Card className="shadow-lg">
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Input Section */}
             <div>
               <Label htmlFor="ip-input" className="mb-2 block text-gray-700 font-medium">
@@ -54,9 +48,8 @@ export const IPChecker = () => {
                   id="ip-input"
                   type="text"
                   placeholder="Enter IP address (e.g., 8.8.8.8)"
-                  value={ipInput}
+                  value={ipAddress}
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                   disabled={loading}
                   className="flex-1"
                   sizing="lg"
@@ -68,7 +61,7 @@ export const IPChecker = () => {
                   </div>
                 ) : (
                   <Button
-                    onClick={handleCheck}
+                    type="submit"
                     size="lg"
                     className="px-4 bg-blue-500 hover:bg-blue-600 text-white"
                   >
@@ -84,7 +77,7 @@ export const IPChecker = () => {
 
             {/* Results Section */}
             {data && <ThreatDataDisplay data={data} />}
-          </div>
+          </form>
         </Card>
 
         {/* Search History */}

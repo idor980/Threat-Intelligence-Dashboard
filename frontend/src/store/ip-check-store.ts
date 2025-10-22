@@ -1,7 +1,11 @@
 import { create } from 'zustand';
 import { checkIPAddress } from '@/services/api';
 import type { IPCheckState, HistoryItem } from '@/types';
-import { loadHistory, addToHistory, clearHistory as clearLocalHistory } from '@/utils/localStorage';
+import {
+  loadHistory,
+  addToHistory,
+  clearHistory as clearLocalHistory,
+} from '@/utils/local-storage';
 
 export const useIPCheckStore = create<IPCheckState>((set) => ({
   data: null,

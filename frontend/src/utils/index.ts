@@ -1,3 +1,3 @@
 // Utility exports
-export { getRiskLevel } from './riskLevel';
-export type { RiskLevel } from './riskLevel';
+export { getRiskLevel } from './risk-level';
+export type { RiskLevel } from './risk-level';

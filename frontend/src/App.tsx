@@ -1,4 +1,4 @@
-import { IPChecker } from './components/IPChecker';
+import { IPChecker } from './components/ip-check';
 
 function App() {
   return <IPChecker />;

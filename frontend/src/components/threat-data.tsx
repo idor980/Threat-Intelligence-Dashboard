@@ -1,7 +1,7 @@
 import { Globe, Activity } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import type { ThreatIntelligenceData } from '@shared/types';
-import { getRiskLevel } from '@/utils/riskLevel';
+import { getRiskLevel } from '@/utils/risk-level';
 
 type ThreatDataDisplayProps = {
   data: ThreatIntelligenceData;

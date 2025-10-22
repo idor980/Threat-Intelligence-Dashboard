@@ -1,8 +1,8 @@
 import { Card, Button } from 'flowbite-react';
 import { Clock, Trash2 } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
-import { useIPCheckStore } from '@/store/ipCheckStore';
-import { getRiskLevel } from '@/utils/riskLevel';
+import { useIPCheckStore } from '@/store/ip-check-store';
+import { getRiskLevel } from '@/utils/risk-level';
 
 export const SearchHistory = () => {
   const { history, loadFromHistory, clearHistory } = useIPCheckStore();
