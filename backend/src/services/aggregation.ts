@@ -20,18 +20,14 @@ export class ThreatIntelligenceAggregator {
   /**
    * Aggregate threat intelligence data from AbuseIPDB and IPQualityScore
    * @param ipAddress - The IP address to check
-   * @param maxAgeInDays - Maximum age of reports to include (default: 90)
    * @returns Unified threat intelligence data
    */
-  async aggregateThreatData(
-    ipAddress: string,
-    maxAgeInDays: number = 90
-  ): Promise<ThreatIntelligenceData> {
-    logger.info({ ipAddress, maxAgeInDays }, '🔍 Starting IP address threat intelligence query');
+  async aggregateThreatData(ipAddress: string): Promise<ThreatIntelligenceData> {
+    logger.info({ ipAddress }, '🔍 Starting IP address threat intelligence query');
 
     // Fetch data from both APIs in parallel
     const [abuseData, ipQualityData] = await Promise.all([
-      this.abuseIPDBService.checkIP(ipAddress, maxAgeInDays),
+      this.abuseIPDBService.checkIP(ipAddress),
       this.ipQualityScoreService.checkIP(ipAddress),
     ]);
 

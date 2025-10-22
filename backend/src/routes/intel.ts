@@ -28,10 +28,10 @@ router.get(
         return;
       }
 
-      const { ip, maxAgeInDays } = validationResult.data;
+      const { ip } = validationResult.data;
 
       // Fetch and aggregate threat intelligence data
-      const response = await aggregator.aggregateThreatData(ip, maxAgeInDays);
+      const response = await aggregator.aggregateThreatData(ip);
       res.json(response);
     } catch (error) {
       logger.error({ error }, '❌ Error in route handler');
