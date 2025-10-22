@@ -50,11 +50,13 @@ A Node.js/Express API that aggregates IP threat intelligence data from multiple 
 ## ⚙️ Setup
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Create `.env` file**
+
    ```bash
    # Server Configuration
    PORT=3001
@@ -65,32 +67,57 @@ A Node.js/Express API that aggregates IP threat intelligence data from multiple 
    ```
 
 3. **Run development server**
+
    ```bash
    npm run dev
    ```
 
+   The server should start at `http://localhost:3001`
+
+## 🧪 Testing the API
+
+You can test the endpoints using curl:
+
+**Health Check:**
+
+```bash
+curl http://localhost:3001/health
+```
+
+**IP Intelligence Check:**
+
+```bash
+curl "http://localhost:3001/api/intel?ip=8.8.8.8"
+```
+
 ## 📡 API Endpoints
 
 ### Health Check
+
 ```
 GET /health
 ```
+
 Returns server health status.
 
 ### IP Threat Intelligence
+
 ```
 GET /api/intel?ip=<IP_ADDRESS>
 ```
 
 **Query Parameters:**
+
 - `ip` (required): IPv4 or IPv6 address to check
 
 **Example Request:**
+
 ```bash
 curl "http://localhost:3001/api/intel?ip=8.8.8.8"
 ```
 
 **Example Response:**
+
 ```json
 {
   "ipAddress": "8.8.8.8",
@@ -106,10 +133,10 @@ curl "http://localhost:3001/api/intel?ip=8.8.8.8"
 
 ## 🛠️ Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run lint` | Run ESLint |
+| Command        | Description                              |
+| -------------- | ---------------------------------------- |
+| `npm run dev`  | Start development server with hot reload |
+| `npm run lint` | Run ESLint                               |
 
 ## 🔒 Security Features
 
@@ -128,11 +155,11 @@ curl "http://localhost:3001/api/intel?ip=8.8.8.8"
 
 ## 📝 Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `PORT` | Server port (default: 3001) | No |
-| `ABUSEIPDB_API_KEY` | AbuseIPDB API key | Yes |
-| `IPQUALITYSCORE_API_KEY` | IPQualityScore API key | Yes |
+| Variable                 | Description                 | Required |
+| ------------------------ | --------------------------- | -------- |
+| `PORT`                   | Server port (default: 3001) | No       |
+| `ABUSEIPDB_API_KEY`      | AbuseIPDB API key           | Yes      |
+| `IPQUALITYSCORE_API_KEY` | IPQualityScore API key      | Yes      |
 
 ## 🧪 Error Handling
 
@@ -147,7 +174,7 @@ The API returns consistent error responses:
 ```
 
 Common error codes:
+
 - `400`: Invalid input (malformed IP address)
 - `429`: Rate limit exceeded
 - `500`: Internal server error
-
