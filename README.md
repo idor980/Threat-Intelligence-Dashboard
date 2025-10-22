@@ -26,8 +26,9 @@ npm run dev:frontend   # Frontend: http://localhost:5173
 ### Testing
 
 ```bash
-cd backend && npm test
-cd frontend && npm test
+npm run test:all          # Run all tests
+npm run test:backend      # Backend tests only
+npm run test:frontend     # Frontend tests only
 ```
 
 ---
