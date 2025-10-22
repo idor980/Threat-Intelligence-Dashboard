@@ -34,6 +34,7 @@ src/
 **Flow:** `Route → Validator → Aggregator → Clients → Transform → Response`
 
 **Key Patterns:**
+
 - Layered separation of concerns
 - Centralized error handling (`handleProviderError`)
 - Parallel API calls with `Promise.all()`
@@ -46,9 +47,11 @@ src/
 Check IP threat intelligence.
 
 **Query Params:**
+
 - `ip` (required): IPv4 or IPv6 address
 
 **Response (200):**
+
 ```json
 {
   "ipAddress": "8.8.8.8",
@@ -63,6 +66,7 @@ Check IP threat intelligence.
 ```
 
 **Error Response (400/429/500):**
+
 ```json
 {
   "error": "Validation Error",
@@ -76,6 +80,7 @@ Check IP threat intelligence.
 Health check endpoint.
 
 **Example:**
+
 ```bash
 curl "http://localhost:3000/api/intel?ip=8.8.8.8"
 ```
@@ -96,6 +101,7 @@ npm test -- --watch   # Watch mode
 ```
 
 **Test Coverage:**
+
 - IP validation (IPv4/IPv6, malformed IPs)
 - Data aggregation logic
 - Error handling (rate limits, invalid API keys)
@@ -111,15 +117,16 @@ npm test -- --watch   # Watch mode
 
 ## 📝 Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `PORT` | No | 3000 | Server port |
-| `ABUSEIPDB_API_KEY` | Yes | - | AbuseIPDB API key |
-| `IPQUALITYSCORE_API_KEY` | Yes | - | IPQualityScore API key |
+| Variable                 | Required | Default | Description            |
+| ------------------------ | -------- | ------- | ---------------------- |
+| `PORT`                   | No       | 3000    | Server port            |
+| `ABUSEIPDB_API_KEY`      | Yes      | -       | AbuseIPDB API key      |
+| `IPQUALITYSCORE_API_KEY` | Yes      | -       | IPQualityScore API key |
 
 ## 🔍 Logging
 
 Structured JSON logs via Pino:
+
 ```bash
 {"level":"info","ipAddress":"8.8.8.8","msg":"Starting IP address threat intelligence query"}
 ```

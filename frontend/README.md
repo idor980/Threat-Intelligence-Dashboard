@@ -31,11 +31,13 @@ src/
 ```
 
 **State Flow:**
+
 ```
 User Input → Zustand Store → API Service → Update Store → Re-render Components
 ```
 
 **Key Features:**
+
 - Zustand for global state (data, loading, error, history)
 - localStorage persistence for last 10 searches
 - Risk level calculation from abuse + threat scores
@@ -43,13 +45,13 @@ User Input → Zustand Store → API Service → Update Store → Re-render Comp
 
 ## 🎨 Components
 
-| Component | Purpose |
-|-----------|---------|
-| `IPChecker` | Main form + orchestration |
+| Component           | Purpose                              |
+| ------------------- | ------------------------------------ |
+| `IPChecker`         | Main form + orchestration            |
 | `ThreatDataDisplay` | Results with color-coded risk levels |
-| `SearchHistory` | Last 10 searches with timestamps |
-| `ErrorAlert` | User-friendly error messages |
-| `PageHeader` | Branding |
+| `SearchHistory`     | Last 10 searches with timestamps     |
+| `ErrorAlert`        | User-friendly error messages         |
+| `PageHeader`        | Branding                             |
 
 ## 📊 State Management (Zustand)
 
@@ -58,7 +60,7 @@ User Input → Zustand Store → API Service → Update Store → Re-render Comp
 const { data, loading, error, history, checkIP, loadFromHistory, clearHistory } = useIPCheckStore();
 
 // Check new IP
-await checkIP("8.8.8.8");
+await checkIP('8.8.8.8');
 
 // Load from history
 loadFromHistory(historyItem);
@@ -68,6 +70,7 @@ clearHistory();
 ```
 
 **Store State:**
+
 - `data`: Current IP threat intelligence data
 - `loading`: Boolean for async operations
 - `error`: Error message string
@@ -77,10 +80,11 @@ clearHistory();
 
 ```typescript
 // utils/risk-level.ts
-getRiskLevel(abuseScore, threatScore)
+getRiskLevel(abuseScore, threatScore);
 ```
 
 **Scoring:**
+
 - Takes max(abuseScore, threatScore)
 - **Minimal Risk** (0-24): Green
 - **Low Risk** (25-49): Yellow
@@ -95,6 +99,7 @@ npm test -- --watch   # Watch mode
 ```
 
 **Test Coverage:**
+
 - Component rendering (input, button, error states)
 - Risk level calculation logic
 - State management (loading, data, errors)
@@ -111,9 +116,9 @@ npm test -- --watch   # Watch mode
 
 ## 📝 Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `VITE_API_BASE_URL` | No | `http://localhost:3000` | Backend API URL |
+| Variable            | Required | Default                 | Description     |
+| ------------------- | -------- | ----------------------- | --------------- |
+| `VITE_API_BASE_URL` | No       | `http://localhost:3000` | Backend API URL |
 
 ## 🎨 UI/UX Highlights
 

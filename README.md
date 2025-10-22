@@ -5,6 +5,7 @@ Full-stack application for checking IP addresses against multiple threat intelli
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - API keys for [AbuseIPDB](https://www.abuseipdb.com/api.html) and [IPQualityScore](https://www.ipqualityscore.com/)
 
@@ -14,10 +15,9 @@ Full-stack application for checking IP addresses against multiple threat intelli
 # Install all dependencies (root, backend, frontend)
 npm run install:all
 
-# Configure backend (create backend/.env)
-ABUSEIPDB_API_KEY=your_key_here
-IPQUALITYSCORE_API_KEY=your_key_here
-PORT=3000
+# Configure backend (copy and update with your API keys)
+cp backend/.env.example backend/.env
+# Edit backend/.env with your actual API keys
 
 # Run (in separate terminals)
 npm run dev:backend    # Backend: http://localhost:3000
@@ -36,10 +36,12 @@ cd frontend && npm test
 ## 🏗️ Architecture
 
 **Tech Stack:**
+
 - **Frontend**: React 19 + TypeScript + Vite + Zustand + Tailwind CSS
 - **Backend**: Node.js + Express 5 + TypeScript + Zod + Pino
 
 **Structure:**
+
 ```
 threat-intelligence-dashboard/
 ├── frontend/    # React app with Zustand state management
@@ -48,6 +50,7 @@ threat-intelligence-dashboard/
 ```
 
 **Key Patterns:**
+
 - Layered architecture: Routes → Aggregators → Clients
 - Parallel API calls with `Promise.all()`
 - Centralized error handling
@@ -62,6 +65,7 @@ threat-intelligence-dashboard/
 Both APIs must succeed, or the request fails.
 
 **Why?**
+
 - Threat intelligence requires **complete data** for accurate risk assessment
 - Missing abuse scores OR VPN detection could mislead users about IP safety
 - Simpler error handling with no partial-data ambiguity
@@ -75,6 +79,7 @@ Both APIs must succeed, or the request fails.
 Every check fetches fresh data from external APIs.
 
 **Why?**
+
 - Threat intelligence is time-sensitive (scores change as new reports arrive)
 - Users expect current data when clicking "Check"
 - History feature lets users revisit past results
@@ -88,6 +93,7 @@ Every check fetches fresh data from external APIs.
 IP validation happens only on the backend using Node's native `net.isIP()`.
 
 **Why?**
+
 - Single source of truth (no duplicate validation logic)
 - Node's built-in validator is reliable and available only server-side
 - Separation of concerns (frontend = UX, backend = business logic)
@@ -99,12 +105,14 @@ IP validation happens only on the backend using Node's native `net.isIP()`.
 ## 📊 Features
 
 ✅ **Core Requirements:**
+
 - IP validation (IPv4/IPv6)
 - Aggregated threat data from AbuseIPDB + IPQualityScore
 - Clean, unified response format
 - Error handling & rate limiting
 
 ✅ **Bonus Features:**
+
 - Risk scoring with color-coded levels (Minimal/Low/Medium/High)
 - Persistent search history (last 10 in localStorage)
 - Graceful rate limit handling
@@ -116,6 +124,7 @@ IP validation happens only on the backend using Node's native `net.isIP()`.
 ### `GET /api/intel?ip=<address>`
 
 **Response:**
+
 ```json
 {
   "ipAddress": "8.8.8.8",
@@ -138,12 +147,14 @@ Server health check.
 ## 📝 Development Notes
 
 **Code Quality:**
+
 - TypeScript strict mode
 - ESLint + consistent formatting
 - Meaningful tests (not just coverage)
 - Structured logging (Pino)
 
 **Security:**
+
 - Environment-based API keys
 - Rate limiting (10 req/min)
 - 10s request timeouts
@@ -154,6 +165,7 @@ Server health check.
 ## 🔮 Production Considerations
 
 If scaling to production, consider:
+
 - Graceful degradation with `Promise.allSettled()`
 - Response caching with TTL
 - Database-backed history
