@@ -45,16 +45,7 @@ export const SearchHistory = () => {
 
       <div className="space-y-2">
         {history.map((item) => {
-          const risk = getRiskLevel(item.data.abuseScore);
-          const { abuseScore } = item.data;
-          const badgeColor =
-            abuseScore >= 75
-              ? 'bg-red-100 text-red-700'
-              : abuseScore >= 50
-                ? 'bg-orange-100 text-orange-700'
-                : abuseScore >= 25
-                  ? 'bg-yellow-100 text-yellow-700'
-                  : 'bg-green-100 text-green-700';
+          const risk = getRiskLevel(item.data.abuseScore, item.data.threatScore);
 
           return (
             <button
@@ -66,7 +57,9 @@ export const SearchHistory = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-mono font-semibold text-gray-900">{item.ipAddress}</span>
-                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${badgeColor}`}>
+                    <span
+                      className={`px-2 py-0.5 text-xs font-medium rounded-full ${risk.bgColor} ${risk.color}`}
+                    >
                       {risk.text}
                     </span>
                   </div>

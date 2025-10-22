@@ -8,7 +8,7 @@ type ThreatDataDisplayProps = {
 };
 
 export const ThreatDataDisplay = ({ data }: ThreatDataDisplayProps) => {
-  const riskLevel = getRiskLevel(data.abuseScore);
+  const riskLevel = getRiskLevel(data.abuseScore, data.threatScore);
 
   return (
     <div className="space-y-4">
@@ -26,7 +26,7 @@ export const ThreatDataDisplay = ({ data }: ThreatDataDisplayProps) => {
             <p className="text-gray-600 mt-1">{data.hostname || 'No hostname available'}</p>
           </div>
           <div className="flex flex-col items-end">
-            <div className={twMerge('text-4xl font-bold', riskLevel.color)}>{data.abuseScore}%</div>
+            <div className={twMerge('text-4xl font-bold', riskLevel.color)}>{riskLevel.score}%</div>
             <div className={twMerge('text-sm font-semibold mt-1', riskLevel.color)}>
               {riskLevel.text}
             </div>
@@ -62,6 +62,16 @@ export const ThreatDataDisplay = ({ data }: ThreatDataDisplayProps) => {
           </h4>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
+              <span className="text-gray-600">Abuse Score:</span>
+              <span className="font-semibold text-gray-900">{data.abuseScore}</span>
+            </div>
+            {data.threatScore !== undefined && (
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Threat Score:</span>
+                <span className="font-semibold text-gray-900">{data.threatScore}</span>
+              </div>
+            )}
+            <div className="flex justify-between items-center">
               <span className="text-gray-600">Recent Reports:</span>
               <span className="font-semibold text-gray-900">{data.recentReports}</span>
             </div>
@@ -76,12 +86,6 @@ export const ThreatDataDisplay = ({ data }: ThreatDataDisplayProps) => {
                 >
                   {data.vpnDetected ? 'Yes' : 'No'}
                 </span>
-              </div>
-            )}
-            {data.threatScore !== undefined && (
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Threat Score:</span>
-                <span className="font-semibold text-gray-900">{data.threatScore}%</span>
               </div>
             )}
           </div>
