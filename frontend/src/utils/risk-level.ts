@@ -1,20 +1,10 @@
-/**
- * Utility functions for calculating risk levels based on abuse scores
- */
-
 export type RiskLevel = {
   text: string;
   color: string;
   bgColor: string;
-  score: number; // The calculated max score used for risk determination
+  score: number;
 };
 
-/**
- * Determines the risk level based on abuse and threat scores
- * @param abuseScore - The abuse confidence score (0-100)
- * @param threatScore - The fraud/threat score (0-100), optional
- * @returns Risk level with associated colors and the calculated score
- */
 export const getRiskLevel = (abuseScore: number, threatScore: number): RiskLevel => {
   // Use the maximum score between abuseScore and threatScore
   const maxScore = threatScore !== undefined ? Math.max(abuseScore, threatScore) : abuseScore;

@@ -23,6 +23,38 @@ threat-intelligence-dashboard/
 
 ## 🔑 Key Design Decisions
 
+### 1. Always Fetch Fresh Data (No Caching)
+
+Each IP lookup triggers a new API call to the external services instead of serving cached results.
+
+**Rationale:**
+
+- **Time-Sensitive Data**: Threat intelligence values (abuse scores, VPN/proxy flags, etc.) can change frequently as new reports arrive.
+- **Transparency**: Each result includes a timestamp so users know exactly when it was fetched.
+- **User Intent**: The history panel allows revisiting past results, while "Check" explicitly requests a fresh lookup.
+
+**Trade-off:**
+This approach consumes more API quota but guarantees up-to-date information.
+_(In production, a caching layer or TTL-based refresh strategy could balance accuracy and efficiency.)_
+
+---
+
+### 2. Backend-Only IP Validation
+
+IP format validation is handled exclusively on the backend, not duplicated in the frontend.
+
+**Rationale:**
+
+- **Single Source of Truth**: Uses Node's native `net.isIP()` for reliable, centralized validation.
+- **Separation of Concerns**: The frontend focuses on user interaction and display; the backend enforces logic and data integrity.
+- **Simplicity**: Avoids maintaining different validation approaches or custom regex logic, since Node's `net` library is only available on the backend.
+
+**Trade-off:**
+Users receive validation feedback only after the backend request.
+_(In production, client-side pre-validation could improve UX, but backend validation would remain authoritative.)_
+
+---
+
 ### Fail-All Approach for API Aggregation
 
 **This application uses a "fail-all" strategy** when aggregating data from external threat intelligence APIs (AbuseIPDB and IPQualityScore).
