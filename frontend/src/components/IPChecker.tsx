@@ -8,25 +8,21 @@ import { Header } from '@/components/Header';
 
 export const IPChecker = () => {
   const [ipInput, setIpInput] = useState('');
-  const [validationError, setValidationError] = useState<string | null>(null);
-  const { data, loading, error, checkIP, clearError } = useIPCheckStore();
+  const { data, loading, error, checkIP, setError, clearError } = useIPCheckStore();
 
   const handleCheck = () => {
     const trimmedIP = ipInput.trim();
     if (!trimmedIP) {
-      setValidationError('Please enter an IP address');
+      setError('Please enter an IP address');
       return;
     }
-    setValidationError(null);
+    clearError();
     checkIP(trimmedIP);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIpInput(e.target.value);
     // Clear errors when user starts typing
-    if (validationError) {
-      setValidationError(null);
-    }
     if (error) {
       clearError();
     }
@@ -78,10 +74,7 @@ export const IPChecker = () => {
               </div>
             </div>
 
-            {/* Validation Error */}
-            {validationError && <ErrorAlert message={validationError} />}
-
-            {/* API Error State */}
+            {/* Error State */}
             {error && <ErrorAlert message={error} />}
 
             {/* Results Section */}
