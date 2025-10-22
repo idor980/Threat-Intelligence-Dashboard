@@ -38,11 +38,6 @@ export class ThreatIntelligenceAggregator {
     this.ipQualityScoreService = new IPQualityScoreService();
   }
 
-  /**
-   * Aggregate threat intelligence data from AbuseIPDB and IPQualityScore
-   * @param ipAddress - The IP address to check
-   * @returns Unified threat intelligence data
-   */
   async aggregateThreatData(ipAddress: string): Promise<ThreatIntelligenceData> {
     logger.info({ ipAddress }, '🔍 Starting IP address threat intelligence query');
 

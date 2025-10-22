@@ -18,10 +18,6 @@ export function loadHistory(): HistoryItem[] {
   }
 }
 
-/**
- * Saves search history to localStorage
- * @param history - Array of history items to save
- */
 export function saveHistory(history: HistoryItem[]): void {
   try {
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
@@ -30,12 +26,6 @@ export function saveHistory(history: HistoryItem[]): void {
   }
 }
 
-/**
- * Adds a new item to search history
- * Removes duplicate IPs and maintains max limit
- * @param item - History item to add
- * @returns Updated history array
- */
 export function addToHistory(item: HistoryItem): HistoryItem[] {
   const history = loadHistory();
 
