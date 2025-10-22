@@ -1,24 +1,3 @@
-# Backend - Threat Intelligence API
-
-Node.js/Express BFF that aggregates IP threat intelligence from AbuseIPDB and IPQualityScore.
-
-## 🚀 Quick Start
-
-```bash
-# Install
-npm install
-
-# Configure (.env file)
-PORT=3000
-ABUSEIPDB_API_KEY=your_key
-IPQUALITYSCORE_API_KEY=your_key
-
-# Run
-npm run dev          # Development (http://localhost:3000)
-npm test             # Run tests
-npm run lint         # Check code quality
-```
-
 ## 🏗️ Architecture
 
 ```
@@ -132,3 +111,30 @@ Structured JSON logs via Pino:
 ```
 
 Debug mode: Set `NODE_ENV=development` to see verbose logs.
+
+---
+
+## 📋 Implementation Decisions
+
+These are design choices made specifically for this assignment. They reflect trade-offs appropriate for the scope and requirements of the task.
+
+### Simple Rate Limiting (10 requests/minute)
+
+A basic rate limiter using `express-rate-limit` with a fixed 10 requests per minute per IP address.
+
+**Rationale:**
+
+- Demonstrates rate limiting concept for the assignment requirements
+- Protects against basic abuse and accidental request loops
+- Simple to implement and understand
+
+**Production Considerations:**
+
+In a production environment, a more sophisticated approach would be needed:
+
+1. **API-Aware Rate Limiting**: Align rate limits with external API quotas (AbuseIPDB: 1,000/day free tier, IPQualityScore: 5,000/month free tier) to prevent quota exhaustion
+2. **Retry with Backoff**: Implement exponential backoff with jitter when external APIs return 429 (Too Many Requests) to gracefully handle rate limit errors
+3. **Distributed Rate Limiting**: Use Redis or similar for rate limiting across multiple server instances
+4. **Per-User Quotas**: Track usage by authenticated user rather than IP address to prevent sharing limits
+
+For this assignment, the simple fixed-rate approach is sufficient to demonstrate error handling and user feedback for rate limit scenarios.

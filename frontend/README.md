@@ -1,24 +1,3 @@
-# Frontend - Threat Intelligence Dashboard
-
-React app for checking IP addresses with visual risk assessment and search history.
-
-## 🚀 Quick Start
-
-```bash
-# Install
-npm install
-
-# Configure (optional .env file)
-VITE_API_BASE_URL=http://localhost:3000
-
-# Run
-npm run dev          # Development (http://localhost:5173)
-npm test             # Run tests
-npm run build        # Production build
-```
-
-**Note:** Backend must be running at `http://localhost:3000` (or your configured URL).
-
 ## 🏗️ Architecture
 
 ```
@@ -91,18 +70,6 @@ getRiskLevel(abuseScore, threatScore);
 - **Medium Risk** (50-74): Orange
 - **High Risk** (75-100): Red
 
-## 🧪 Testing
-
-```bash
-npm test              # Run all tests
-npm test -- --watch   # Watch mode
-```
-
-**Test Coverage:**
-
-- Component rendering (input, button, error states)
-- Risk level calculation logic
-- State management (loading, data, errors)
 
 ## 🛠️ Tech Stack
 
