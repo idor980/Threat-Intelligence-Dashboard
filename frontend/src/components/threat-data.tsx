@@ -65,29 +65,28 @@ export const ThreatDataDisplay = ({ data }: ThreatDataDisplayProps) => {
               <span className="text-gray-600">Abuse Score:</span>
               <span className="font-semibold text-gray-900">{data.abuseScore}</span>
             </div>
-            {data.threatScore !== undefined && (
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Threat Score:</span>
-                <span className="font-semibold text-gray-900">{data.threatScore}</span>
-              </div>
-            )}
+
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Threat Score:</span>
+              <span className="font-semibold text-gray-900">{data.threatScore}</span>
+            </div>
+
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Recent Reports:</span>
               <span className="font-semibold text-gray-900">{data.recentReports}</span>
             </div>
-            {data.vpnDetected !== undefined && (
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">VPN Detected:</span>
-                <span
-                  className={twMerge(
-                    'font-semibold',
-                    data.vpnDetected ? 'text-orange-600' : 'text-green-600'
-                  )}
-                >
-                  {data.vpnDetected ? 'Yes' : 'No'}
-                </span>
-              </div>
-            )}
+
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">VPN Detected:</span>
+              <span
+                className={twMerge(
+                  'font-semibold',
+                  data.vpnDetected ? 'text-orange-600' : 'text-green-600'
+                )}
+              >
+                {data.vpnDetected ? 'Yes' : 'No'}
+              </span>
+            </div>
           </div>
         </div>
       </div>
