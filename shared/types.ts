@@ -11,8 +11,8 @@ export type ThreatIntelligenceData = {
   country: string;
   abuseScore: number;
   recentReports: number;
-  vpnDetected?: boolean | undefined;
-  threatScore?: number | undefined;
+  vpnDetected: boolean;
+  threatScore: number;
 };
 
 // Error Response Type

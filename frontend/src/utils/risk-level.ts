@@ -15,8 +15,8 @@ export type RiskLevel = {
  * @param threatScore - The fraud/threat score (0-100), optional
  * @returns Risk level with associated colors and the calculated score
  */
-export const getRiskLevel = (abuseScore: number, threatScore?: number): RiskLevel => {
-  // Use the maximum score between abuseScore and threatScore (if available)
+export const getRiskLevel = (abuseScore: number, threatScore: number): RiskLevel => {
+  // Use the maximum score between abuseScore and threatScore
   const maxScore = threatScore !== undefined ? Math.max(abuseScore, threatScore) : abuseScore;
 
   if (maxScore >= 75) {
