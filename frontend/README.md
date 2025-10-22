@@ -32,44 +32,14 @@ User Input → Zustand Store → API Service → Update Store → Re-render Comp
 | `ErrorAlert`        | User-friendly error messages         |
 | `PageHeader`        | Branding                             |
 
-## 📊 State Management (Zustand)
-
-```typescript
-// Store API
-const { data, loading, error, history, checkIP, loadFromHistory, clearHistory } = useIPCheckStore();
-
-// Check new IP
-await checkIP('8.8.8.8');
-
-// Load from history
-loadFromHistory(historyItem);
-
-// Clear all history
-clearHistory();
-```
-
-**Store State:**
-
-- `data`: Current IP threat intelligence data
-- `loading`: Boolean for async operations
-- `error`: Error message string
-- `history`: Array of last 10 searches (persisted in localStorage)
-
 ## 🎯 Risk Level Logic
 
-```typescript
-// utils/risk-level.ts
-getRiskLevel(abuseScore, threatScore);
-```
+Takes max(abuseScore, threatScore)
 
-**Scoring:**
-
-- Takes max(abuseScore, threatScore)
 - **Minimal Risk** (0-24): Green
 - **Low Risk** (25-49): Yellow
 - **Medium Risk** (50-74): Orange
 - **High Risk** (75-100): Red
-
 
 ## 🛠️ Tech Stack
 
@@ -93,5 +63,4 @@ getRiskLevel(abuseScore, threatScore);
 - **Error Handling**: Clear, actionable error messages
 - **Auto-Clear Errors**: Errors disappear when user types
 - **History Panel**: Click to reload previous searches
-- **Responsive**: Works on mobile and desktop
 - **Visual Risk Indicators**: Color-coded borders and badges
