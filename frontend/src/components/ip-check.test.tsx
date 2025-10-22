@@ -21,40 +21,39 @@ describe('IPChecker Component', () => {
     expect(screen.getByRole('button', { name: /check/i })).toBeInTheDocument();
   });
 
-//   it('should display error message when error exists', () => {
-//     useIPCheckStore.setState({ error: 'Invalid IP address' });
-//     render(<IPChecker />);
+  it('should display error message when error exists', () => {
+    useIPCheckStore.setState({ error: 'Invalid IP address' });
+    render(<IPChecker />);
 
-//     expect(screen.getByText('Invalid IP address')).toBeInTheDocument();
-//   });
+    expect(screen.getByText('Invalid IP address')).toBeInTheDocument();
+  });
 
-//   it('should disable input while loading', () => {
-//     useIPCheckStore.setState({ loading: true });
-//     render(<IPChecker />);
+  it('should disable input while loading', () => {
+    useIPCheckStore.setState({ loading: true });
+    render(<IPChecker />);
 
-//     const input = screen.getByPlaceholderText(/enter ip address/i);
-//     expect(input).toBeDisabled();
-//   });
+    const input = screen.getByPlaceholderText(/enter ip address/i);
+    expect(input).toBeDisabled();
+  });
 
-//   it('should display threat data when available', () => {
-//     useIPCheckStore.setState({
-//       data: {
-//         ipAddress: '8.8.8.8',
-//         hostname: 'dns.google',
-//         isp: 'Google LLC',
-//         country: 'United States',
-//         abuseScore: 0,
-//         recentReports: 0,
-//         vpnDetected: false,
-//         threatScore: 0,
-//       },
-//     });
+  it('should display threat data when available', () => {
+    useIPCheckStore.setState({
+      data: {
+        ipAddress: '8.8.8.8',
+        hostname: 'dns.google',
+        isp: 'Google LLC',
+        country: 'United States',
+        abuseScore: 0,
+        recentReports: 0,
+        vpnDetected: false,
+        threatScore: 0,
+      },
+    });
 
-//     render(<IPChecker />);
+    render(<IPChecker />);
 
-//     expect(screen.getByText('8.8.8.8')).toBeInTheDocument();
-//     expect(screen.getByText('United States')).toBeInTheDocument();
-//     expect(screen.getByText('Google LLC')).toBeInTheDocument();
-//   });
+    expect(screen.getByText('8.8.8.8')).toBeInTheDocument();
+    expect(screen.getByText('United States')).toBeInTheDocument();
+    expect(screen.getByText('Google LLC')).toBeInTheDocument();
+  });
 });
-
